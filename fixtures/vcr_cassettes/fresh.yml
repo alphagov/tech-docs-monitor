@@ -1,0 +1,39 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://docs.publishing.service.gov.uk/api/page-freshness.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Connection:
+      - close
+      Host:
+      - localhost:4567
+      User-Agent:
+      - http.rb/2.1.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '383'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.3.1/2016-04-26) OpenSSL/1.0.2g
+      Date:
+      - Wed, 12 Apr 2017 14:08:23 GMT
+      Connection:
+      - close
+    body:
+      encoding: ASCII-8BIT
+      string: '{"expired_pages":[{"title":"asset master attachment processing","url":"https://docs.publishing.service.gov.uk/manual/alerts/asset-master-attachment-processing.html","review_by":"2016-01-01","owner_slack":"#2ndline"}],"expiring_soon":[{"title":"Run
+        an A/B test","url":"https://docs.publishing.service.gov.uk/manual/ab-testing.html","review_by":"2017-04-14","owner_slack":"@tijmen"}]}
+
+'
+    http_version: 
+  recorded_at: Wed, 12 Apr 2017 14:08:23 GMT
+recorded_with: VCR 2.9.3
