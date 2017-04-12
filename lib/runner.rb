@@ -5,7 +5,8 @@ class Runner
   def run
     unless Date.today.monday?
       puts "Not posting anything, this is not a Monday"
-      return
+      # TODO: always post now we're testing
+      # return
     end
 
     if ENV['REALLY_POST_TO_SLACK'] != "1"
@@ -37,7 +38,7 @@ class Runner
       icon_emoji: ":donkeywork:",
       text: message,
       mrkdwn: true,
-      channel: '#bot-testing',
+      channel: '#bot-testing', # TODO: temporarily only notify #bot-testing to test
     }
   end
 end
