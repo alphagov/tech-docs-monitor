@@ -38,7 +38,7 @@ class Runner
       icon_emoji: ":donkeywork:",
       text: message,
       mrkdwn: true,
-      channel: '#bot-testing', # TODO: temporarily only notify #bot-testing to test
+      channel: '#2ndline',
     }
   end
 end
