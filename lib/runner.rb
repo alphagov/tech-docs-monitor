@@ -3,10 +3,9 @@ require 'json'
 
 class Runner
   def run
-    unless Date.today.monday?
-      puts "Not posting anything, this is not a Monday"
-      # TODO: always post now we're testing
-      # return
+    if Date.today.saturday? || Date.today.sunday?
+      puts "Not posting anything, this is not a working day"
+      return
     end
 
     if ENV['REALLY_POST_TO_SLACK'] != "1"
