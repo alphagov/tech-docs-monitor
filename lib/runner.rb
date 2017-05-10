@@ -28,11 +28,6 @@ class Runner
       messages_per_channel[page["owner_slack"]] << "- <#{page["url"]}|#{page["title"]}> should be reviewed now"
     end
 
-    docs["expiring_soon"].each do |page|
-      messages_per_channel[page["owner_slack"]] ||= []
-      messages_per_channel[page["owner_slack"]] << "- <#{page["url"]}|#{page["title"]}> should be reviewed before #{page["review_by"]}"
-    end
-
     messages_per_channel.map do |channel, messages|
       message = <<~doc
         Hello :wave:, this is your friendly donkey of documentation.
