@@ -10,6 +10,7 @@ class Runner
 
     if ENV['REALLY_POST_TO_SLACK'] != "1"
       puts "Not posting anything, this is a dry run"
+      puts JSON.pretty_generate(message_payloads)
       return
     end
 
