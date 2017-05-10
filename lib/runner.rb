@@ -13,31 +13,39 @@ class Runner
       return
     end
 
-    HTTP.post(ENV.fetch("BADGER_SLACK_WEBHOOK_URL"), body: JSON.dump(message_payload))
+    message_payloads.each do |message_payload|
+      HTTP.post(ENV.fetch("BADGER_SLACK_WEBHOOK_URL"), body: JSON.dump(message_payload))
+    end
   end
 
-  def message_payload
+  def message_payloads
     docs = JSON.parse(HTTP.get('https://docs.publishing.service.gov.uk/api/page-freshness.json'))
-    messages = []
+    messages_per_channel = {}
 
     docs["expired_pages"].each do |page|
-      messages << "- <#{page["url"]}|#{page["title"]}> should be reviewed now by #{page["owner_slack"]}"
+      messages_per_channel[page["owner_slack"]] ||= []
+      messages_per_channel[page["owner_slack"]] << "- <#{page["url"]}|#{page["title"]}> should be reviewed now"
     end
 
     docs["expiring_soon"].each do |page|
-      messages << "- <#{page["url"]}|#{page["title"]}> should be reviewed before #{page["review_by"]} by #{page["owner_slack"]}"
+      messages_per_channel[page["owner_slack"]] ||= []
+      messages_per_channel[page["owner_slack"]] << "- <#{page["url"]}|#{page["title"]}> should be reviewed before #{page["review_by"]}"
     end
 
-    status = messages.any? ? messages.join("\n") : "All docs are up to date!"
+    messages_per_channel.map do |channel, messages|
+      message = <<~doc
+        Hello :wave:, this is your friendly donkey of documentation.
 
-    message = "Hello :wave:, this is your friendly donkey of documentation. \n\n#{status}"
+        #{messages.join("\n")}
+      doc
 
-    {
-      username: "Donkey of Docs",
-      icon_emoji: ":donkeywork:",
-      text: message,
-      mrkdwn: true,
-      channel: '#2ndline',
-    }
+      {
+        username: "Donkey of Docs",
+        icon_emoji: ":donkeywork:",
+        text: message,
+        mrkdwn: true,
+        channel: channel,
+      }
+    end
   end
 end

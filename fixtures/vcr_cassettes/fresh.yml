@@ -31,7 +31,7 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: '{"expired_pages":[{"title":"asset master attachment processing","url":"https://docs.publishing.service.gov.uk/manual/alerts/asset-master-attachment-processing.html","review_by":"2016-01-01","owner_slack":"#2ndline"}],"expiring_soon":[{"title":"Run
-        an A/B test","url":"https://docs.publishing.service.gov.uk/manual/ab-testing.html","review_by":"2017-04-14","owner_slack":"@tijmen"}]}
+        an A/B test","url":"https://docs.publishing.service.gov.uk/manual/ab-testing.html","review_by":"2017-04-14","owner_slack":"#taxonomy"}]}
 
 '
     http_version: 
