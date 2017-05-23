@@ -16,9 +16,9 @@ RSpec.describe Runner do
 
       expect(payloads).to match([
         {
-          username: "Donkey of Docs",
-          icon_emoji: ":donkeywork:",
-          text: "Hello :wave:, this is your friendly donkey of documentation.\n\n- <https://docs.publishing.service.gov.uk/manual/alerts/asset-master-attachment-processing.html|asset master attachment processing> should be reviewed now\n",
+          username: "Daniel the Manual Spaniel",
+          icon_emoji: ":daniel-the-manual-spaniel:",
+          text: "Hello :wave:, this is your friendly manual spaniel.\n\n- <https://docs.publishing.service.gov.uk/manual/alerts/asset-master-attachment-processing.html|asset master attachment processing> should be reviewed now\n",
           mrkdwn: true,
           channel: "#2ndline",
         }
