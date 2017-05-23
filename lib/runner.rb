@@ -30,14 +30,14 @@ class Runner
 
     messages_per_channel.map do |channel, messages|
       message = <<~doc
-        Hello :wave:, this is your friendly donkey of documentation.
+        Hello :wave:, this is your friendly manual spaniel.
 
         #{messages.join("\n")}
       doc
 
       {
-        username: "Donkey of Docs",
-        icon_emoji: ":donkeywork:",
+        username: "Daniel the Manual Spaniel",
+        icon_emoji: ":daniel-the-manual-spaniel:",
         text: message,
         mrkdwn: true,
         channel: channel,
