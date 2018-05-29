@@ -27,9 +27,11 @@ class Runner
     page_freshness["expired_pages"]
       .group_by { |page| page["owner_slack"] }
       .map do |owner, pages|
-        messages = pages.map do |page|
-          "- <#{page["url"]}|#{page["title"]}> should be reviewed now"
-        end
+        messages = pages
+          .sort_by { |page| page["review_by"] }
+          .map do |page|
+            "- <#{page["url"]}|#{page["title"]}> should be reviewed now"
+          end
         [owner, messages]
       end
   end
