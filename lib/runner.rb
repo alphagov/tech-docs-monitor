@@ -19,15 +19,22 @@ class Runner
     end
   end
 
+  def page_freshness
+    JSON.parse(HTTP.get('https://docs.publishing.service.gov.uk/api/page-freshness.json'))
+  end
+
+  def messages_per_channel
+    page_freshness["expired_pages"]
+      .group_by { |page| page["owner_slack"] }
+      .map do |owner, pages|
+        messages = pages.map do |page|
+          "- <#{page["url"]}|#{page["title"]}> should be reviewed now"
+        end
+        [owner, messages]
+      end
+  end
+
   def message_payloads
-    docs = JSON.parse(HTTP.get('https://docs.publishing.service.gov.uk/api/page-freshness.json'))
-    messages_per_channel = {}
-
-    docs["expired_pages"].each do |page|
-      messages_per_channel[page["owner_slack"]] ||= []
-      messages_per_channel[page["owner_slack"]] << "- <#{page["url"]}|#{page["title"]}> should be reviewed now"
-    end
-
     messages_per_channel.map do |channel, messages|
       message = <<~doc
         Hello :wave:, this is your friendly manual spaniel.
