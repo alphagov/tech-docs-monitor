@@ -31,7 +31,7 @@ class Runner
           .sort_by { |page| page["review_by"] }
           .first(5)
           .map do |page|
-            "- <#{page["url"]}|#{page["title"]}> should be reviewed now"
+            "<#{page["url"]}|#{page["title"]}> should be reviewed now"
           end
         [owner, messages]
       end
