@@ -18,7 +18,7 @@ RSpec.describe Runner do
         {
           username: "Daniel the Manual Spaniel",
           icon_emoji: ":daniel-the-manual-spaniel:",
-          text: "Hello :wave:, this is your friendly manual spaniel.\n\n<https://docs.publishing.service.gov.uk/manual/alerts/asset-master-attachment-processing.html|asset master attachment processing> should be reviewed now\n",
+          text: "Hello :wave:, this is your friendly manual spaniel. I've found a page that is due for review:\n\n<https://docs.publishing.service.gov.uk/manual/alerts/asset-master-attachment-processing.html|asset master attachment processing>\n",
           mrkdwn: true,
           channel: "#2ndline",
         }

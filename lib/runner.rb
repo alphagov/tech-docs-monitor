@@ -1,5 +1,7 @@
 require 'http'
 require 'json'
+require 'active_support'
+require 'active_support/core_ext'
 
 class Runner
   def run
@@ -29,9 +31,8 @@ class Runner
       .map do |owner, pages|
         messages = pages
           .sort_by { |page| page["review_by"] }
-          .first(5)
           .map do |page|
-            "<#{page["url"]}|#{page["title"]}> should be reviewed now"
+            "<#{page["url"]}|#{page["title"]}>"
           end
         [owner, messages]
       end
@@ -39,8 +40,10 @@ class Runner
 
   def message_payloads
     messages_per_channel.map do |channel, messages|
+      number_of = messages.size == 1 ? "I've found a page that is due for review" : "I've found #{messages.size} pages that are due for review"
+
       message = <<~doc
-        Hello :wave:, this is your friendly manual spaniel.
+        Hello :wave:, this is your friendly manual spaniel. #{number_of}:
 
         #{messages.join("\n")}
       doc
