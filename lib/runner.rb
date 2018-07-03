@@ -29,7 +29,6 @@ class Runner
       .map do |owner, pages|
         messages = pages
           .sort_by { |page| page["review_by"] }
-          .first(5)
           .map do |page|
             "<#{page["url"]}|#{page["title"]}> should be reviewed now"
           end
