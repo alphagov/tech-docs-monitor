@@ -5,14 +5,18 @@ require 'active_support/core_ext'
 
 class Runner
   def run
+    payloads = message_payloads
+
+    puts "== JSON Payload:"
+    puts JSON.pretty_generate(payloads)
+
     if Date.today.saturday? || Date.today.sunday?
-      puts "Not posting anything, this is not a working day"
+      puts "SKIPPING POST: Not posting anything, this is not a working day"
       return
     end
 
     if ENV['REALLY_POST_TO_SLACK'] != "1"
-      puts "Not posting anything, this is a dry run"
-      puts JSON.pretty_generate(message_payloads)
+      puts "SKIPPING POST: Not posting anything, this is a dry run"
       return
     end
 
@@ -47,6 +51,9 @@ class Runner
 
         #{messages.join("\n")}
       doc
+
+      puts "== Message to #{channel}"
+      puts message
 
       {
         username: "Daniel the Manual Spaniel",
