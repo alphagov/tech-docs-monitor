@@ -47,7 +47,7 @@ class Runner
       number_of = messages.size == 1 ? "I've found a page that is due for review" : "I've found #{messages.size} pages that are due for review"
 
       message = <<~doc
-        Hello :wave:, this is your friendly manual spaniel. #{number_of}:
+        Hello :paw_prints:, this is your friendly manual spaniel. #{number_of}:
 
         #{messages.join("\n")}
 
