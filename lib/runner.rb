@@ -36,7 +36,7 @@ class Runner
         messages = pages
           .sort_by { |page| page["review_by"] }
           .map do |page|
-            "<#{page["url"]}|#{page["title"]}>"
+            "- <#{page["url"]}|#{page["title"]}>"
           end
         [owner, messages]
       end
