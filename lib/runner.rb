@@ -50,6 +50,8 @@ class Runner
         Hello :wave:, this is your friendly manual spaniel. #{number_of}:
 
         #{messages.join("\n")}
+
+        Read <https://docs.publishing.service.gov.uk/manual/review-page.html|how to review a page> in the docs.
       doc
 
       puts "== Message to #{channel}"
