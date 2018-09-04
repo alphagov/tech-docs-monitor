@@ -1,6 +1,6 @@
 # Tech Docs Template - page expiry notifier
 
-This repo is part of the [tech-docs-template][template](), and is used in
+This repo is part of the [tech-docs-template][template], and is used in
 conjunction with the [page expiry feature][expiry] that is part of the
 [tech-docs-gem][gem]
 
