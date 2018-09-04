@@ -19,6 +19,18 @@ bundle install
 rake run
 ```
 
+## Deployment
+
+Heroku is the simplest option.  The script can run quite happily on a free dyno
+using the Heroku Scheduler add-on.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+Note: the above will deploy the app to your Heroku account, and add the
+Scheduler add-on, but _won't_ configure it to run.  To do this, go to your
+[dashboard](https://dashboard.heroku.com/apps), find the appropriate app, open
+the Scheduler add-on, and add a new job that runs `rake run` once a day.
+
 ## Configuration
 
 This notifier is configured using environment variables. All variables must be

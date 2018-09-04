@@ -1,0 +1,26 @@
+{
+  "name": "tech-docs-monitor",
+  "description": "Sends Slack notifications for Tech Docs pages that need reviewing",
+  "repository": "https://github.com/alphagov/tech-docs-monitor",
+  "logo": "https://cdn.shopify.com/s/files/1/1061/1924/products/Dog_Emoji_large.png",
+  "env": {
+    "SITE_PAGE_API_URL": {
+      "description": "The full URL to your site's `/api/pages.json` file."
+    },
+    "SLACK_WEBHOOK_URL": {
+      "description": "The Slack webhook URL to allow messages to be posted."
+    },
+    "REALLY_POST_TO_SLACK": {
+      "description": "Messages will only be posted to Slack if the value of this var is `1`.",
+      "value": "0"
+    }
+  },
+  "addons": [
+    "scheduler:standard"
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-ruby.git"
+    }
+  ]
+}
