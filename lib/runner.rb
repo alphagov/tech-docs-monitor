@@ -1,9 +1,16 @@
 require 'http'
 require 'json'
+require 'date'
 require 'active_support'
 require 'active_support/core_ext'
 
 class Runner
+  def initialize(pages_url, slack_url, live)
+    @pages_url = pages_url
+    @slack_url = slack_url
+    @live = !!live
+  end
+
   def run
     payloads = message_payloads
 
@@ -15,22 +22,25 @@ class Runner
       return
     end
 
-    if ENV['REALLY_POST_TO_SLACK'] != "1"
+    unless post_to_slack?
       puts "SKIPPING POST: Not posting anything, this is a dry run"
       return
     end
 
     message_payloads.each do |message_payload|
-      HTTP.post(ENV.fetch("BADGER_SLACK_WEBHOOK_URL"), body: JSON.dump(message_payload))
+      HTTP.post(@slack_url, body: JSON.dump(message_payload))
     end
   end
 
-  def page_freshness
-    JSON.parse(HTTP.get('https://docs.publishing.service.gov.uk/api/page-freshness.json'))
+  def pages
+    JSON.parse(HTTP.get(@pages_url))
   end
 
   def messages_per_channel
-    page_freshness["expired_pages"]
+    today = Date.today
+    pages
+      .reject { |page| page["review_by"] == nil }
+      .select { |page| Date.parse(page["review_by"]) <= today }
       .group_by { |page| page["owner_slack"] }
       .map do |owner, pages|
         messages = pages
@@ -44,14 +54,14 @@ class Runner
 
   def message_payloads
     messages_per_channel.map do |channel, messages|
-      number_of = messages.size == 1 ? "I've found a page that is due for review" : "I've found #{messages.size} pages that are due for review"
+      number_of = messages.size == 1 ?
+        "I've found a page that is due for review" :
+        "I've found #{messages.size} pages that are due for review"
 
       message = <<~doc
         Hello :paw_prints:, this is your friendly manual spaniel. #{number_of}:
 
         #{messages.join("\n")}
-
-        Read <https://docs.publishing.service.gov.uk/manual/review-page.html|how to review a page> in the docs.
       doc
 
       puts "== Message to #{channel}"
@@ -65,5 +75,11 @@ class Runner
         channel: channel,
       }
     end
+  end
+
+  private
+
+  def post_to_slack?
+    @live
   end
 end
