@@ -7,7 +7,7 @@ namespace :notify do
   slack_url = ENV.fetch("SLACK_WEBHOOK_URL")
   live = ENV.fetch("REALLY_POST_TO_SLACK", 0) == "1"
 
-  runner = Runner.new(pages_url, slack_url, live)
+  runner = Notifier.new(pages_url, slack_url, live)
 
   desc "Notifies of all pages which have expired"
   task :expired do

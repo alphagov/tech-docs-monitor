@@ -3,7 +3,7 @@ require 'json'
 require 'date'
 require 'chronic'
 
-class Runner
+class Notifier
   def initialize(pages_url, slack_url, live)
     @pages_url = pages_url
     @slack_url = slack_url

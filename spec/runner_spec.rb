@@ -9,10 +9,10 @@ VCR.configure do |config|
   config.hook_into :webmock
 end
 
-RSpec.describe Runner do
+RSpec.describe Notifier do
   it "generates the correct message" do
     VCR.use_cassette "fresh" do
-      payloads = Runner.new("https://gds-way.cloudapps.digital/api/pages.json", "", false).message_payloads
+      payloads = Notifier.new("https://gds-way.cloudapps.digital/api/pages.json", "", false).message_payloads
 
       expect(payloads).to match([
         {
