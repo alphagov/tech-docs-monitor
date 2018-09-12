@@ -11,6 +11,12 @@ namespace :notify do
 
   desc "Notifies of all pages which have expired"
   task :expired do
-    runner.run
+    runner.notify_expired
+  end
+
+  desc "Notifies of all pages which will expire soon"
+  task :expires, :timeframe do |_, args|
+    args.with_defaults(timeframe: "in 1 month")
+    runner.notify_expires_within(args[:timeframe])
   end
 end
