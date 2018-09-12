@@ -1,37 +1,87 @@
 require 'http'
 require 'json'
 require 'date'
-require 'chronic'
+
+class Page
+  attr_reader :url, :title, :review_by, :owner
+
+  def initialize(page_data)
+    @url       = page_data["url"]
+    @title     = page_data["title"]
+    @review_by = page_data["review_by"].nil? ? nil : Date.parse(page_data["review_by"])
+    @owner     = page_data["owner_slack"]
+  end
+end
+
+module Notification
+  class Expired
+    def include?(page)
+      page.review_by <= Date.today
+    end
+
+    def line_for(page)
+      age = (Date.today - page.review_by).to_i
+      expired_when = if page.review_by == Date.today
+                       "today"
+                     elsif age == 1
+                       "yesterday"
+                     else
+                       "#{age} days ago"
+                     end
+      "- <#{page.url}|#{page.title}> (#{expired_when})"
+    end
+
+    def singular_message
+        "I've found a page that is due for review"
+    end
+
+    def multiple_message
+        "I've found %s pages that are due for review"
+    end
+  end
+
+  class WillExpireBy
+    def initialize(expiry_date)
+      @expiry_date = expiry_date
+    end
+
+    def include?(page)
+      page.review_by > Date.today && page.review_by <= @expiry_date
+    end
+
+    def line_for(page)
+      age = (page.review_by - Date.today).to_i
+      expires_when = if page.review_by == Date.today
+                       "today"
+                     elsif age == 1
+                       "tomorrow"
+                     else
+                       "in #{age} days"
+                     end
+      "- <#{page.url}|#{page.title}> (#{expires_when})"
+    end
+
+    def singular_message
+        "I've found a page that will expire on or before #{@expiry_date}"
+    end
+
+    def multiple_message
+        "I've found %s pages that will expire on or before #{@expiry_date}"
+    end
+  end
+end
 
 class Notifier
-  def initialize(pages_url, slack_url, live)
+  def initialize(notification, pages_url, slack_url, live)
+    @notification = notification
     @pages_url = pages_url
     @slack_url = slack_url
     @live = !!live
   end
 
-  def notify_expired
-    filter = ->(review_by) { review_by <= Date.today }
-    msgs = messages_per_channel(filter)
-    payloads = message_payloads(msgs,
-        "I've found a page that is due for review",
-        "I've found %s pages that are due for review")
-    notify(payloads)
-  end
+  def run
+    payloads = message_payloads(pages_per_channel)
 
-  def notify_expires_within(timeframe)
-    expires = Chronic.parse(timeframe).to_date
-    filter = ->(review_by) { review_by > Date.today && review_by <= expires }
-    msgs = messages_per_channel(filter)
-    payloads = message_payloads(msgs,
-        "I've found a page that will expire on or before #{expires.to_date}",
-        "I've found %s pages that will expire on or before #{expires.to_date}")
-    notify(payloads)
-  end
-
-  private
-
-  def notify(payloads)
     puts "== JSON Payload:"
     puts JSON.pretty_generate(payloads)
 
@@ -45,39 +95,38 @@ class Notifier
       return
     end
 
-    message_payloads.each do |message_payload|
+    payloads.each do |message_payload|
       HTTP.post(@slack_url, body: JSON.dump(message_payload))
     end
   end
 
   def pages
-    JSON.parse(HTTP.get(@pages_url))
+    JSON.parse(HTTP.get(@pages_url)).map { |data| Page.new(data) }
   end
 
-  def messages_per_channel(filter = ->(_) { true })
+  def pages_per_channel
     pages
-      .reject { |page| page["review_by"] == nil }
-      .select { |page| filter.call(Date.parse(page["review_by"])) }
-      .group_by { |page| page["owner_slack"] }
+      .reject { |page| page.review_by.nil? }
+      .select { |page| @notification.include?(page) }
+      .group_by { |page| page.owner }
       .map do |owner, pages|
-        messages = pages
-          .sort_by { |page| page["review_by"] }
-          .map do |page|
-            "- <#{page["url"]}|#{page["title"]}>"
-          end
-        [owner, messages]
+        [owner, pages.sort_by { |page| page.review_by }]
       end
   end
 
-  def message_payloads(messages_per_channel, msg_for_one, msg_for_other)
-    messages_per_channel.map do |channel, messages|
-      number_of = messages.size == 1 ? msg_for_one : msg_for_other
-      number_of = number_of % [messages.size]
+  def message_payloads(grouped_pages)
+    grouped_pages.map do |channel, pages|
+      number_of = pages.size == 1 ? @notification.singular_message : @notification.multiple_message
+      number_of = number_of % [pages.size]
+
+      page_lines = pages.map do |page|
+        @notification.line_for(page)
+      end
 
       message = <<~doc
         Hello :paw_prints:, this is your friendly manual spaniel. #{number_of}:
 
-        #{messages.join("\n")}
+        #{page_lines.join("\n")}
       doc
 
       puts "== Message to #{channel}"
