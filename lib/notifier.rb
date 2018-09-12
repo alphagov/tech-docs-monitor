@@ -2,74 +2,9 @@ require 'http'
 require 'json'
 require 'date'
 
-class Page
-  attr_reader :url, :title, :review_by, :owner
-
-  def initialize(page_data)
-    @url       = page_data["url"]
-    @title     = page_data["title"]
-    @review_by = page_data["review_by"].nil? ? nil : Date.parse(page_data["review_by"])
-    @owner     = page_data["owner_slack"]
-  end
-end
-
-module Notification
-  class Expired
-    def include?(page)
-      page.review_by <= Date.today
-    end
-
-    def line_for(page)
-      age = (Date.today - page.review_by).to_i
-      expired_when = if page.review_by == Date.today
-                       "today"
-                     elsif age == 1
-                       "yesterday"
-                     else
-                       "#{age} days ago"
-                     end
-      "- <#{page.url}|#{page.title}> (#{expired_when})"
-    end
-
-    def singular_message
-        "I've found a page that is due for review"
-    end
-
-    def multiple_message
-        "I've found %s pages that are due for review"
-    end
-  end
-
-  class WillExpireBy
-    def initialize(expiry_date)
-      @expiry_date = expiry_date
-    end
-
-    def include?(page)
-      page.review_by > Date.today && page.review_by <= @expiry_date
-    end
-
-    def line_for(page)
-      age = (page.review_by - Date.today).to_i
-      expires_when = if page.review_by == Date.today
-                       "today"
-                     elsif age == 1
-                       "tomorrow"
-                     else
-                       "in #{age} days"
-                     end
-      "- <#{page.url}|#{page.title}> (#{expires_when})"
-    end
-
-    def singular_message
-        "I've found a page that will expire on or before #{@expiry_date}"
-    end
-
-    def multiple_message
-        "I've found %s pages that will expire on or before #{@expiry_date}"
-    end
-  end
-end
+require_relative './page'
+require_relative './notification/expired'
+require_relative './notification/will_expire_by'
 
 class Notifier
   def initialize(notification, pages_url, slack_url, live)
