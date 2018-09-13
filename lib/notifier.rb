@@ -1,18 +1,21 @@
 require 'http'
 require 'json'
 require 'date'
-require 'active_support'
-require 'active_support/core_ext'
 
-class Runner
-  def initialize(pages_url, slack_url, live)
+require_relative './page'
+require_relative './notification/expired'
+require_relative './notification/will_expire_by'
+
+class Notifier
+  def initialize(notification, pages_url, slack_url, live)
+    @notification = notification
     @pages_url = pages_url
     @slack_url = slack_url
     @live = !!live
   end
 
   def run
-    payloads = message_payloads
+    payloads = message_payloads(pages_per_channel)
 
     puts "== JSON Payload:"
     puts JSON.pretty_generate(payloads)
@@ -27,41 +30,38 @@ class Runner
       return
     end
 
-    message_payloads.each do |message_payload|
+    payloads.each do |message_payload|
       HTTP.post(@slack_url, body: JSON.dump(message_payload))
     end
   end
 
   def pages
-    JSON.parse(HTTP.get(@pages_url))
+    JSON.parse(HTTP.get(@pages_url)).map { |data| Page.new(data) }
   end
 
-  def messages_per_channel
-    today = Date.today
+  def pages_per_channel
     pages
-      .reject { |page| page["review_by"] == nil }
-      .select { |page| Date.parse(page["review_by"]) <= today }
-      .group_by { |page| page["owner_slack"] }
+      .reject { |page| page.review_by.nil? }
+      .select { |page| @notification.include?(page) }
+      .group_by { |page| page.owner }
       .map do |owner, pages|
-        messages = pages
-          .sort_by { |page| page["review_by"] }
-          .map do |page|
-            "- <#{page["url"]}|#{page["title"]}>"
-          end
-        [owner, messages]
+        [owner, pages.sort_by { |page| page.review_by }]
       end
   end
 
-  def message_payloads
-    messages_per_channel.map do |channel, messages|
-      number_of = messages.size == 1 ?
-        "I've found a page that is due for review" :
-        "I've found #{messages.size} pages that are due for review"
+  def message_payloads(grouped_pages)
+    grouped_pages.map do |channel, pages|
+      number_of = pages.size == 1 ? @notification.singular_message : @notification.multiple_message
+      number_of = number_of % [pages.size]
+
+      page_lines = pages.map do |page|
+        @notification.line_for(page)
+      end
 
       message = <<~doc
         Hello :paw_prints:, this is your friendly manual spaniel. #{number_of}:
 
-        #{messages.join("\n")}
+        #{page_lines.join("\n")}
       doc
 
       puts "== Message to #{channel}"
@@ -76,8 +76,6 @@ class Runner
       }
     end
   end
-
-  private
 
   def post_to_slack?
     @live

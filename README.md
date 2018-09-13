@@ -16,7 +16,8 @@ them know that it needs reviewing.
 
 ```ruby
 bundle install
-rake run
+rake notify:expired
+rake notify:expires
 ```
 
 ## Deployment
