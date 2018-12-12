@@ -30,7 +30,7 @@ using the Heroku Scheduler add-on.
 Note: the above will deploy the app to your Heroku account, and add the
 Scheduler add-on, but _won't_ configure it to run.  To do this, go to your
 [dashboard](https://dashboard.heroku.com/apps), find the appropriate app, open
-the Scheduler add-on, and add a new job that runs `rake run` once a day.
+the Scheduler add-on, and add a new job that runs `rake notify:expired` or `rake notify:expires` once a day.
 
 ## Configuration
 
