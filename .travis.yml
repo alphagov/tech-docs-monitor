@@ -1,0 +1,13 @@
+language: ruby
+cache: bundler
+
+env:
+  global:
+    - REALLY_POST_TO_SLACK=1
+  matrix:
+    # verify-tech-docs
+    - secure: "PM1Xe8s3WhPAYqC0b56X7I/xdstM1pRYhCdu0CDmecYv8rDcuxkfWW4ZriQB6x+8z6n7nrg7MBchtuMCD0AiBkG5Gqm6e30fxTSpwfqXilGIGpqNaNm0gmJoEUX5nK2Z3UKN/u6QLKmx44l88A84LMXX87JNU1yUiDoi4arnaRQVz3j2xuwofuZTYFhui4rHCoq9+6/dJaOVG9E1dlKQ6rVGb4TqY3lUMGqIikz9Z9FSGXtXKAd33L0yygvjTxcfJUV9BIq32+JhfikTjmI6h2ecabuFoltWrdsl7wH5rxj2atq6euPLfLFw+1E44LiE2T6HuxcRamyuHKYbENZkSv39/lWCpdwAeEvZ+coEUY97teiTytZM/Hl9GxEMeKULZciFltHxh5wqNgoFM/VPT9SFHgjpKJwUUimS87uD4GuYZgr7qeuUMFul0pdkdLeJTtZu44zqoqoHGbOWwoQlQe/6mdtC3EtHOHrT5O40B7BFhi/k4GY0M8ELZLWORVK0LYIrmJaEhrNcRo2OK/InhROgWi8wSCnzLIJwQ4/ZV04vGQ3jNejFoDu1aLivwxqt4PCc+vvHsCJ0QkBNWISvnuzYoojQeQbNh4xpJjoaI+veeJM4LgMDDueMfT7qDpi+0U75YPpJMVaGqz0mhLfGLP1P8Vd8BG659S87XGL+TtE="
+
+script:
+  - bundle check || bundle install
+  - bundle exec rake notify:expired
