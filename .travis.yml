@@ -7,6 +7,7 @@ env:
     - secure: "a1gycb+hc1Q/ErxKKigplnXABJuHnt0zUPgfV9zXoq5hVfwCsdXbi9htxyGanxMNNDvILPWKgSjnIJJuCw8hmfVZP95/URwN4IJO8b3Matv75VuqnOgVdHQOPWRUaC4MH2qXKMGHEJDAxZTqLiX1A3QbKEQdiN5qh8WvLAfGIGL6JrWhXNRD/TedYrULapiKOovr64MZN/WFl490u6c/9ABd0/AdFjN3HHwDTKYt+iNSbSoSQh/kiil4QYmLfrwk9WlM1Wwqn4abt0GZqx1cmH+jxGjtJVShMgptnzJzMMIRWg7FO4So4RGbfJgmAnl3EFAm7YtULZg0ZN9gsCWhLIdvY1zyNxS0pTFVoesZ4x16oDo09UsTYjS3kATMcgbgCntlhtxXQeeZPi6PB9cRsHwC5vFKSALwvoPUFylDOQ+2qukzxXXtPnUlW85AnM7LCZocyq0lJkh3/Ikjklsbp2jCaAAmPW9Q0Z/p6gnI2xV9wWYQZsgSuV8zK6th+R/NIGW7EeSIZUdfWSaNpVhMBmomukARQhQmGKFx+uM0yZghuLR3B2cFwSRmm+sTEhvLg2JQSfMolrL0ID0kkDh+ZN41rk4CmeyGfNLrLf6C0K/w72usXURC7briAA3YMmVffgAP06sfqEAREZF1w8V/UAK6eSeGIlTL4ts3vgHxCGc="
   matrix:
     - SITE_PAGE_API_URL=https://www.docs.verify.service.gov.uk/api/pages.json
+    - SITE_PAGE_API_URL=https://gds-way.cloudapps.digital/api/pages.json
 
 script:
   - bundle check || bundle install
