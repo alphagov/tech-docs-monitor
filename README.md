@@ -4,9 +4,8 @@ This repo is part of the [tech-docs-template][template], and is used in
 conjunction with the [page expiry feature][expiry] that is part of the
 [tech-docs-gem][gem]
 
-Running the script will look at the pages API for your site, find all pages
-that have expired, and post a Slack message to the owner of each page to let
-them know that it needs reviewing.
+Travis CI will run the script once a day during weekdays.
+It will look at the pages API for your site, find all pages that have expired, and post a Slack message to the owner of each page to let them know that it needs reviewing.
 
 [template]: https://github.com/alphagov/tech-docs-template
 [expiry]: https://alphagov.github.io/tech-docs-manual/#page-expiry-and-review-notices
@@ -14,34 +13,40 @@ them know that it needs reviewing.
 
 ## Usage
 
-```ruby
-bundle install
-rake notify:expired
-rake notify:expires
+### `alphagov` users
+
+If you are part of the `alphagov` GitHub organisation you can enable the notifier by raising a PR to add your published documentation to the [`.travis.yml` file][travis]:
+
+```
+matrix:
+  - SITE_PAGE_API_URL=https://www.docs.verify.service.gov.uk/api/pages.json
+  - SITE_PAGE_API_URL=https://gds-way.cloudapps.digital/api/pages.json
+  - SITE_PAGE_API_URL=https://<YOUR_PUBLISHED_DOCS>/api/pages.json
 ```
 
-## Deployment
+[travis]: https://github.com/alphagov/tech-docs-monitor/blob/master/.travis.yml
 
-Heroku is the simplest option.  The script can run quite happily on a free dyno
-using the Heroku Scheduler add-on.
+### Configure Travis CI
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+If you are not part of the `alphagov` GitHub organisation, you can still configure Travis CI to automatically deploy the notifier:
 
-Note: the above will deploy the app to your Heroku account, and add the
-Scheduler add-on, but _won't_ configure it to run.  To do this, go to your
-[dashboard](https://dashboard.heroku.com/apps), find the appropriate app, open
-the Scheduler add-on, and add a new job that runs `rake notify:expired` or `rake notify:expires` once a day.
+1. Fork the `tech-docs-monitor` repository
+1. Get an [incoming Slack webhook][webhook] for the notifier
+1. Run [`travis encrypt`][encrypt] to add the encrypted webhook to your `.travis.yml` file
+1. Add your published documentation page API URL to `env.matrix` in your `.travis.yml` file
 
-## Configuration
+[encrypt]: https://docs.travis-ci.com/user/encryption-keys/#usage
+[webhook]: https://api.slack.com/incoming-webhooks
 
-This notifier is configured using environment variables. All variables must be
-defined:
+### General configuration
+
+If you want to use something other than Travis CI to deploy the notifier, you must make sure all its environment variables are defined:
 
 * `SITE_PAGE_API_URL`: The full URL to your site's `/api/pages.json` file.
 * `SLACK_WEBHOOK_URL`: The Slack webhook URL to allow messages to be posted.
 * `REALLY_POST_TO_SLACK`: Messages will only be posted to Slack if the value of
   this var is `1`.
 
-## License
+## Licence
 
-The gem is available as open source under the terms of the [MIT License](LICENSE).
+The gem is available as open source under the terms of the [MIT License](LICENCE).
