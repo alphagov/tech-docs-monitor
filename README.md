@@ -42,6 +42,6 @@ defined:
 * `REALLY_POST_TO_SLACK`: Messages will only be posted to Slack if the value of
   this var is `1`.
 
-## License
+## Licence
 
-The gem is available as open source under the terms of the [MIT License](LICENSE).
+The gem is available as open source under the terms of the [MIT License](LICENCE).
