@@ -8,7 +8,7 @@ Travis CI will run the script once a day during weekdays.
 It will look at the pages API for your site, find all pages that have expired, and post a Slack message to the owner of each page to let them know that it needs reviewing.
 
 [template]: https://github.com/alphagov/tech-docs-template
-[expiry]: https://alphagov.github.io/tech-docs-manual/#page-expiry-and-review-notices
+[expiry]: https://alphagov.github.io/tech-docs-manual/#last-reviewed-on-and-review-in
 [gem]: https://github.com/alphagov/tech-docs-gem
 
 ## Usage
