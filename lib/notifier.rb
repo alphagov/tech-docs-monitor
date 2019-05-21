@@ -64,6 +64,8 @@ class Notifier
         #{page_lines.join("\n")}
       doc
 
+      channel = ENV.fetch('OVERRIDE_SLACK_CHANNEL', channel)
+
       puts "== Message to #{channel}"
       puts message
 

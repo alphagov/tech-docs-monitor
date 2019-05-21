@@ -118,6 +118,21 @@ RSpec.describe Notifier, vcr: true do
           }
         ])
       end
+
+      it "allows overriding the slack channel" do
+        ENV['OVERRIDE_SLACK_CHANNEL'] = '#override'
+        payloads = @notifier.message_payloads(@notifier.pages_per_channel)
+
+        expect(payloads).to match([
+          {
+            username: "Daniel the Manual Spaniel",
+            icon_emoji: ":daniel-the-manual-spaniel:",
+            text: "Hello :paw_prints:, this is your friendly manual spaniel. I've found 2 pages that will expire on or before 2018-10-12:\n\n- <https://gds-way.cloudapps.digital/standards/logging.html|How to store and query logs> (in 18 days)\n- <https://gds-way.cloudapps.digital/standards/monitoring.html|How to monitor your service> (in 18 days)\n",
+            mrkdwn: true,
+            channel: "#override",
+          }
+        ])
+      end
     end
   end
 end

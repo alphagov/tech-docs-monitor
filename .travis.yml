@@ -9,6 +9,4 @@ env:
     - SITE_PAGE_API_URL=https://www.docs.verify.service.gov.uk/api/pages.json
     - SITE_PAGE_API_URL=https://gds-way.cloudapps.digital/api/pages.json
 
-script:
-  - bundle check || bundle install
-  - bundle exec rake notify:expired
+script: ./travis.sh
