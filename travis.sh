@@ -10,9 +10,9 @@ case "$TRAVIS_EVENT_TYPE" in
   pull_request)
     echo "Running tests and not posting anywhere"
     bundle exec rspec
-    REALLY_POST_TO_SLACK="0" bundle exec rake notify:expired
+    REALLY_POST_TO_SLACK="0" SLACK_WEBHOOK_URL="http://none.local" bundle exec rake notify:expired
     ;;
-  pr|pull_request|push)
+  pr|push)
     echo "Running tests and posting to #bot-testing"
     bundle exec rspec
     OVERRIDE_SLACK_CHANNEL="#bot-testing" bundle exec rake notify:expired
