@@ -12,5 +12,6 @@ env:
     - SITE_PAGE_API_URL=https://verify-team-manual.cloudapps.digital/api/pages.json
     - SITE_PAGE_API_URL=https://dcs-pilot-docs.cloudapps.digital/api/pages.json
     - SITE_PAGE_API_URL=https://dcs-service-manual.cloudapps.digital/api/pages.json
+    - SITE_PAGE_API_URL=https://docs.payments.service.gov.uk/api/pages.json
 
 script: ./travis.sh
