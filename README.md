@@ -1,5 +1,7 @@
 # Tech Docs Template - page expiry notifier
 
+[![Build Status](https://travis-ci.com/alphagov/tech-docs-monitor.svg?branch=master)](https://travis-ci.com/alphagov/tech-docs-monitor)
+
 This repo is part of the [tech-docs-template][template], and is used in
 conjunction with the [page expiry feature][expiry] that is part of the
 [tech-docs-gem][gem]
