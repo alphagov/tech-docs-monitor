@@ -37,6 +37,8 @@ jobs:
             source:
               repository: ruby
               tag: 2.6.0
+              username: ((docker_hub_username))
+              password: ((docker_hub_authtoken))
           inputs:
             - name: git-master
           params:
