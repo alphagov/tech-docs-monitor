@@ -12,6 +12,7 @@ namespace :notify do
     "https://dcs-pilot-docs.cloudapps.digital/api/pages.json",
     "https://dcs-service-manual.cloudapps.digital/api/pages.json",
     "https://docs.payments.service.gov.uk/api/pages.json",
+    "https://govwifi-dev-docs.cloudapps.digital/api/pages.json",
   ]
 
   slack_url = ENV.fetch("SLACK_WEBHOOK_URL")
