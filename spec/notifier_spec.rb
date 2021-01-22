@@ -95,6 +95,28 @@ RSpec.describe Notifier, vcr: true do
           }
         ])
       end
+
+      it "limits the number of pages sent to slack" do
+          limited_notifier = Notifier.new(Notification::Expired.new, @pages_url, "", false, 3)
+          payloads = limited_notifier.message_payloads(limited_notifier.pages_per_channel)
+
+          expect(payloads).to match([
+            {
+              username: "Daniel the Manual Spaniel",
+              icon_emoji: ":daniel-the-manual-spaniel:",
+              text: "Hello :paw_prints:, this is your friendly manual spaniel. I've found 3 pages that are due for review:\n\n- <https://gds-way.cloudapps.digital/standards/supporting-services.html|Support Operations> (42 days ago)\n- <https://gds-way.cloudapps.digital/standards/dns-hosting.html|How to manage DNS records for your service> (11 days ago)\n- <https://gds-way.cloudapps.digital/standards/how-to-do-penetration-tests.html|How to do penetration tests> (11 days ago)\n",
+              mrkdwn: true,
+              channel: "#gds-way",
+            },
+            {
+              username: "Daniel the Manual Spaniel",
+              icon_emoji: ":daniel-the-manual-spaniel:",
+              text: "Hello :paw_prints:, this is your friendly manual spaniel. I've found a page that is due for review:\n\n- <https://gds-way.cloudapps.digital/standards/tracking-dependencies.html|How to manage third party software dependencies> (2862 days ago)\n",
+              mrkdwn: true,
+              channel: "@foobarx",
+            }
+          ])
+        end
     end
   end
 
