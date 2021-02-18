@@ -25,6 +25,16 @@ pages_urls = [
 ]
 ```
 
+If you want to limit the number of links that are posted to Slack after a single run, add this to  `limits` in the [`Rakefile`][Rakefile]
+
+```
+limits = {
+  "your-docs-site.cloudapps.digital" => 3
+}
+```
+
+The default behaviour is no limit, and the Slack message will contain all pages discovered.
+
 [Rakefile]: https://github.com/alphagov/tech-docs-monitor/blob/master/Rakefile
 
 ### General configuration

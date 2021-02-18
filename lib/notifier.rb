@@ -7,11 +7,12 @@ require_relative './notification/expired'
 require_relative './notification/will_expire_by'
 
 class Notifier
-  def initialize(notification, pages_url, slack_url, live)
+  def initialize(notification, pages_url, slack_url, live, limit = -1)
     @notification = notification
     @pages_url = pages_url
     @slack_url = slack_url
     @live = !!live
+    @limit = limit
   end
 
   def run
@@ -51,10 +52,12 @@ class Notifier
 
   def message_payloads(grouped_pages)
     grouped_pages.map do |channel, pages|
-      number_of = pages.size == 1 ? @notification.singular_message : @notification.multiple_message
-      number_of = number_of % [pages.size]
 
-      page_lines = pages.map do |page|
+      page_count = @limit == -1 ? pages.size : [pages.size, @limit].min
+      notification_message = page_count == 1 ? @notification.singular_message : @notification.multiple_message
+      number_of = notification_message % [page_count]
+
+      page_lines = pages[0..page_count-1].map do |page|
         @notification.line_for(page)
       end
 

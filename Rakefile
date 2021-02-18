@@ -14,6 +14,10 @@ namespace :notify do
     "https://docs.payments.service.gov.uk/api/pages.json",
   ]
 
+  limits = {
+    "https://dcs-service-manual.cloudapps.digital/api/pages.json" => 5
+  }
+
   slack_url = ENV.fetch("SLACK_WEBHOOK_URL")
   live = ENV.fetch("REALLY_POST_TO_SLACK", 0) == "1"
 
@@ -22,7 +26,7 @@ namespace :notify do
     notification = Notification::Expired.new
 
     pages_urls.each do |page_url|
-      Notifier.new(notification, page_url, slack_url, live).run
+      Notifier.new(notification, page_url, slack_url, live, limits.fetch(page_url, -1)).run
     end
   end
 
