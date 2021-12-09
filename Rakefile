@@ -7,7 +7,6 @@ namespace :notify do
   pages_urls = [
     "https://www.docs.verify.service.gov.uk/api/pages.json",
     "https://gds-way.cloudapps.digital/api/pages.json",
-    "https://docs.publishing.service.gov.uk/api/pages.json",
     "https://verify-team-manual.cloudapps.digital/api/pages.json",
     "https://dcs-pilot-docs.cloudapps.digital/api/pages.json",
     "https://dcs-service-manual.cloudapps.digital/api/pages.json",
