@@ -1,0 +1,20 @@
+on:
+  schedule:
+    - cron: '5 12 * * 1-5'  # 12:05 UTC, Monday to Friday
+  workflow_dispatch:
+
+jobs:
+  daniel_the_manual_spaniel:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - run: bundle exec rake notify:expired
+        env:
+          REALLY_POST_TO_SLACK: ${{ (github.event_name == 'schedule') && 1 || 0 }}
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
