@@ -47,11 +47,11 @@ The following environment variables are necessary:
 
 #### Slack Message Customisation
 
-The default Slack message structure looks like this:
+This is the default Slack message when pages expire:
 
 ![default-message-example](docs/images/default-message-example.png)
 
-It is possible to customise various aspects of the Slack message by configuring various environment variables as follows:
+You can customise parts of the Slack message by configuring environment variables. The environment variables you can customise are:
 
 | Environment Variable Name     | Purpose                                                         | Default Value                                                                          |
 |-------------------------------|-----------------------------------------------------------------|----------------------------------------------------------------------------------------|
@@ -60,7 +60,7 @@ It is possible to customise various aspects of the Slack message by configuring 
 | OVERRIDE_SLACK_USERNAME       | Sets the username to which Slack messages are attributed.       | "Daniel the Manual Spaniel"                                                            |
 | OVERRIDE_SLACK_ICON_EMOJI     | Sets the icon emoji attributed to Slack messages.               | ":daniel-the-manual-spaniel:"                                                          |
 
-Below is an example of a customised message:
+This is an example of a customised Slack message:
 
 ![customised-message-example](docs/images/customised-message-example.png)
 
