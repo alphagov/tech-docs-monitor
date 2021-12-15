@@ -45,7 +45,7 @@ The following environment variables are necessary:
 * `REALLY_POST_TO_SLACK`: Messages will only be posted to Slack if the value of
   this var is `1`.
 
-#### Slack Message Customisation
+#### Slack message customisation
 
 This is the default Slack message when pages expire:
 
@@ -53,7 +53,7 @@ This is the default Slack message when pages expire:
 
 You can customise parts of the Slack message by configuring environment variables. The environment variables you can customise are:
 
-| Environment Variable Name     | Purpose                                                         | Default Value                                                                          |
+| Environment variable name     | Purpose                                                         | Default value                                                                          |
 |-------------------------------|-----------------------------------------------------------------|----------------------------------------------------------------------------------------|
 | OVERRIDE_SLACK_MESSAGE_PREFIX | Sets a custom message prefix.                                   | "Hello :paw_prints:, this is your friendly manual spaniel."                            |
 | OVERRIDE_SLACK_CHANNEL        | Sets a single Slack channel to which all messages will be sent. | The owning Slack channel for each page reported in the site's /api/pages.json endpoint |
