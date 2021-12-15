@@ -45,6 +45,25 @@ The following environment variables are necessary:
 * `REALLY_POST_TO_SLACK`: Messages will only be posted to Slack if the value of
   this var is `1`.
 
+#### Slack Message Customisation
+
+The default Slack message structure looks like this:
+
+![default-message-example](docs/images/default-message-example.png)
+
+It is possible to customise various aspects of the Slack message by configuring various environment variables as follows:
+
+| Environment Variable Name     | Purpose                                                         | Default Value                                                                          |
+|-------------------------------|-----------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| OVERRIDE_SLACK_MESSAGE_PREFIX | Sets a custom message prefix.                                   | "Hello :paw_prints:, this is your friendly manual spaniel."                            |
+| OVERRIDE_SLACK_CHANNEL        | Sets a single Slack channel to which all messages will be sent. | The owning Slack channel for each page reported in the site's /api/pages.json endpoint |
+| OVERRIDE_SLACK_USERNAME       | Sets the username to which Slack messages are attributed.       | "Daniel the Manual Spaniel"                                                            |
+| OVERRIDE_SLACK_ICON_EMOJI     | Sets the icon emoji attributed to Slack messages.               | ":daniel-the-manual-spaniel:"                                                          |
+
+Below is an example of a customised message:
+
+![customised-message-example](docs/images/customised-message-example.png)
+
 ## Licence
 
 The gem is available as open source under the terms of the [MIT License](LICENCE).
