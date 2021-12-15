@@ -65,20 +65,23 @@ class Notifier
         @notification.line_for(page)
       end
 
+      message_prefix = ENV.fetch('OVERRIDE_SLACK_MESSAGE_PREFIX', "Hello :paw_prints:, this is your friendly manual spaniel.")
       message = <<~doc
-        Hello :paw_prints:, this is your friendly manual spaniel. #{number_of}:
+        #{message_prefix} #{number_of}:
 
         #{page_lines.join("\n")}
       doc
 
       channel = ENV.fetch('OVERRIDE_SLACK_CHANNEL', channel)
+      username = ENV.fetch('OVERRIDE_SLACK_USERNAME', "Daniel the Manual Spaniel")
+      icon_emoji = ENV.fetch('OVERRIDE_SLACK_ICON_EMOJI', ":daniel-the-manual-spaniel:")
 
       puts "== Message to #{channel}"
       puts message
 
       {
-        username: "Daniel the Manual Spaniel",
-        icon_emoji: ":daniel-the-manual-spaniel:",
+        username: username,
+        icon_emoji: icon_emoji,
         text: message,
         mrkdwn: true,
         channel: channel,
