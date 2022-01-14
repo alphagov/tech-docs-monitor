@@ -1,6 +1,7 @@
 require 'http'
 require 'json'
 require 'date'
+require 'uri'
 
 require_relative './page'
 require_relative './notification/expired'
@@ -37,7 +38,10 @@ class Notifier
   end
 
   def pages
-    JSON.parse(HTTP.get(@pages_url)).map { |data| Page.new(data) }
+    JSON.parse(HTTP.get(@pages_url)).map { |data|
+      data['url'] = get_absolute_url(data['url'])
+      Page.new(data)
+    }
   end
 
   def pages_per_channel
@@ -85,4 +89,26 @@ class Notifier
   def post_to_slack?
     @live
   end
+
+  private
+
+  def get_absolute_url url
+    target_uri = URI(url)
+    target_path = Pathname.new(target_uri.path)
+    source_uri = URI(@pages_url)
+
+    if target_path.relative?
+      resulting_path = URI::join(source_uri, target_uri.path).path
+    else
+      resulting_path = target_uri.path
+    end
+
+    if source_uri.scheme == 'https'
+      URI::HTTPS.build(scheme: source_uri.scheme, port: source_uri.port, host: source_uri.host, path: resulting_path).to_s
+    else
+      URI::HTTP.build(scheme: source_uri.scheme, port: source_uri.port, host: source_uri.host, path: resulting_path).to_s
 end
+  end
+end
+
+
