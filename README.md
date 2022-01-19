@@ -64,6 +64,50 @@ This is an example of a customised Slack message:
 
 ![customised-message-example](docs/images/customised-message-example.png)
 
+## AWS Lambda
+
+It is possible to run the tech-docs-monitor as an AWS Lambda, this is facilitated by the following `lambda:local` and `lambda:publish` Rake tasks. The Lambda tasks use [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) so this must be installed as a pre-requisite to running the tasks.
+
+### Running the Lambda locally
+
+Create an JSON file containing the event you would like to pass to the Lambda e.g.
+
+`example-event.json`:
+
+```json
+{
+  "run_expired_page_check": true,
+  "run_expire_by_page_check": true,
+  "page_urls": [
+    "https://www.docs.verify.service.gov.uk/api/pages.json",
+    "https://gds-way.cloudapps.digital/api/pages.json"
+  ]
+}
+```
+
+Invoke the `lambda:local` Rake task, passing the path to the event-file as a task parameter e.g.
+
+```shell
+bundle exec rake lambda:local\[example-event.json\]
+```
+
+The Lambda will build and run locally, sending its output to the shell.
+
+### Building and publishing a Lambda artefact
+
+To do this, run the `lambda:publish` Rake task with the following parameters:
+1. The version to use in the published Lambda artefact filename.
+2. The name of the S3 bucket in which to publish the Lambda artefact.
+3. The S3 key prefix to fice the published Lambda artefact.
+
+You must configure an AWS session which has access to the specified Bucket in order for this to work e.g. by using [aws-profile](https://github.com/jrstarke/aws-profile) or similar. 
+
+```shell
+aws-profile -p my-aws-profile bundle exec rake lambda:publish\[0.0.4,my-s3-bucket,aws-lambda-tech-docs-monitor\]
+```
+
+The example above would result in the artefact being published to `aws-lambda-tech-docs-monitor/aws-lambda-tech-docs-monitor-0.0.4.zip` in the `my-s3-bucket` S3 Bucket.
+
 ## Licence
 
 The gem is available as open source under the terms of the [MIT License](LICENCE).

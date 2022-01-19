@@ -1,0 +1,17 @@
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  TechDocsNotifier:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code: ../../lib
+      FunctionName: run
+      Handler: notification/handler.main
+      Environment:
+        Variables:
+          SLACK_WEBHOOK_URL: https://www.foo.com/slack-webhook
+          REALLY_POST_TO_SLACK: 0
+      # PackageType: Zip
+      Role: TechDocsNotifierRole
+      Runtime: ruby2.7
+
