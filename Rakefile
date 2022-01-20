@@ -97,9 +97,9 @@ namespace "lambda" do
     Dir.chdir('lib') do
       sh %{
         SAM_CLI_TELEMETRY=0 sam package --region #{args[:aws_region]} \\
-          --s3-bucket #{args[:s3_bucket]} \\
-          --s3-prefix #{args[:s3_prefix]} \\
-          --output-template-file=#{output_file_absolute_path}
+          --s3-bucket '#{args[:s3_bucket]}' \\
+          --s3-prefix '#{args[:s3_prefix]}' \\
+          --output-template-file='#{output_file_absolute_path}'
       }
     end
     aws_sam_s3_file_name = YAML.load_file(output_file_absolute_path)["Resources"]["TechDocsNotifier"]["Properties"]["Code"]["S3Key"].split('/')[-1]
