@@ -5,17 +5,10 @@ task default: ["notify:expired"]
 
 namespace :notify do
   pages_urls = [
-    "https://www.docs.verify.service.gov.uk/api/pages.json",
-    "https://gds-way.cloudapps.digital/api/pages.json",
-    "https://verify-team-manual.cloudapps.digital/api/pages.json",
-    "https://dcs-pilot-docs.cloudapps.digital/api/pages.json",
-    "https://dcs-service-manual.cloudapps.digital/api/pages.json",
-    "https://docs.payments.service.gov.uk/api/pages.json",
-    "https://govwifi-dev-docs.cloudapps.digital/api/pages.json",
+    "https://technical-guidance.education.gov.uk/api/pages.json",
   ]
 
   limits = {
-    "https://dcs-service-manual.cloudapps.digital/api/pages.json" => 5
   }
 
   slack_url = ENV.fetch("SLACK_WEBHOOK_URL")
