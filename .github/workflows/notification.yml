@@ -1,0 +1,22 @@
+name: Expired pages notification
+
+on:
+  push:
+  schedule: # 07:00 UTC
+    - cron: '0 7 * * *'
+
+jobs:
+  notification:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - run: bundle exec rake notify:expired
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          REALLY_POST_TO_SLACK: 1
