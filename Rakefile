@@ -65,7 +65,7 @@ namespace "lambda" do
       files_to_copy = %w[Gemfile Gemfile.lock .ruby-version]
       files_to_copy.each { | f | FileUtils.copy(File.join(__dir__, f), "lib/#{f}") }
       Dir.chdir('lib') do
-        sh "sam build --use-container -t ../resources/aws-sam-cli/template.yaml --debug"
+        sh "SAM_CLI_TELEMETRY=0 sam build --use-container -t ../resources/aws-sam-cli/template.yaml --debug"
       end
     ensure
       files_to_copy.each { | f | FileUtils.rm"lib/#{f}" }
@@ -75,6 +75,11 @@ namespace "lambda" do
   desc "Runs the Lambda function locally"
   task :local, [:event_file, :aws_region] do | _, args |
     args.with_defaults(:aws_region => "eu-west-2")
+
+    if args[:event_file].nil?
+      fail "Error: :event_file task parameter not provided.\nUsage: bundle exec rake lambda:local\\[path-to-event-file.json\\]"
+    end
+
     event_file_absolute_path = File.join __dir__, args[:event_file]
     begin
       Dir.chdir('lib') do
