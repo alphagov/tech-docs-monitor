@@ -36,7 +36,7 @@ jobs:
             type: docker-image
             source:
               repository: ruby
-              tag: 2.6.0
+              tag: 2.7.5
               username: ((docker_hub_username))
               password: ((docker_hub_authtoken))
           inputs:
