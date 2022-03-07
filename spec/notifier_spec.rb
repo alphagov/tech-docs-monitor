@@ -5,11 +5,6 @@ require "vcr"
 require "webmock/rspec"
 require "timecop"
 
-VCR.configure do |config|
-  config.cassette_library_dir = "fixtures/vcr_cassettes"
-  config.hook_into :webmock
-end
-
 # Mock notification type that includes all pages
 class AllPages
   def include?(_)
