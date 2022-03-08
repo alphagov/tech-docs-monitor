@@ -10,6 +10,18 @@ class AllPages
   def include?(_)
     true
   end
+
+  def line_for(page)
+    "- <#{page.url}|#{page.title}>"
+  end
+
+  def singular_message
+    "I've found a page"
+  end
+
+  def multiple_message
+    "I've found %s pages"
+  end
 end
 
 class NoHowToPages
@@ -145,6 +157,34 @@ RSpec.describe Notifier, vcr: "fresh" do
           }
         ])
       end
+    end
+  end
+
+  describe "#run" do
+    before do
+      @slack_webhook = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+
+      VCR.configure do |config|
+        config.ignore_hosts "hooks.slack.com"
+      end
+    end
+
+    after do
+      VCR.configure do |config|
+        config.unignore_hosts "hooks.slack.com"
+      end
+    end
+
+    it "posts to Slack" do
+      notifier = Notifier.new(AllPages.new, @pages_url, @slack_webhook, true)
+      notifier.run
+      expect(a_request(:post, @slack_webhook)).to have_been_made.times(2)
+    end
+
+    it "does not post to Slack if not live" do
+      notifier = Notifier.new(AllPages.new, @pages_url, @slack_webhook, false)
+      notifier.run
+      expect(a_request(:post, @slack_webhook)).not_to have_been_made
     end
   end
 end
