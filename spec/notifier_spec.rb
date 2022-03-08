@@ -18,15 +18,10 @@ class NoHowToPages
   end
 end
 
-RSpec.describe Notifier, vcr: true do
+RSpec.describe Notifier, vcr: "fresh" do
   before do
     @pages_url = "https://gds-way.cloudapps.digital/api/pages.json"
-    VCR.insert_cassette("fresh")
     Timecop.freeze(Time.local(2018, 9, 12, 0, 0, 0))
-  end
-
-  after do
-    VCR.eject_cassette
   end
 
   describe "#pages" do
