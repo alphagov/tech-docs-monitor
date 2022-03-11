@@ -162,16 +162,19 @@ RSpec.describe Notifier, vcr: "fresh" do
 
   describe "#run" do
     before do
+      ENV.delete("SLACK_TOKEN")
+
       @slack_webhook = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+      @slack_api = "https://slack.com/api/chat.postMessage"
 
       VCR.configure do |config|
-        config.ignore_hosts "hooks.slack.com"
+        config.ignore_hosts "slack.com", "hooks.slack.com"
       end
     end
 
     after do
       VCR.configure do |config|
-        config.unignore_hosts "hooks.slack.com"
+        config.unignore_hosts "slack.com", "hooks.slack.com"
       end
     end
 
@@ -185,6 +188,47 @@ RSpec.describe Notifier, vcr: "fresh" do
       notifier = Notifier.new(AllPages.new, @pages_url, @slack_webhook, false)
       notifier.run
       expect(a_request(:post, @slack_webhook)).not_to have_been_made
+    end
+
+    it "uses the Slack API if SLACK_TOKEN is set" do
+      slack_token = "xoxb-xxxxxxx"
+      stub_const("ENV", {"SLACK_TOKEN" => slack_token})
+      api_request = stub_request(:post, @slack_api)
+        .to_return(body: '{"ok":true}', headers: {"Content-Type": "application/json; charset=utf-8"})
+
+      notifier = Notifier.new(AllPages.new, @pages_url, @slack_webhook, true)
+      notifier.run
+
+      # We want to use the chat.postMessage API instead of webhooks
+      expect(a_request(:post, @slack_webhook)).not_to have_been_made
+      expect(api_request.with(headers: {"Authorization" => "Bearer #{slack_token}"}))
+        .to have_been_made.times(2)
+    end
+
+    it "raises an error if SLACK_TOKEN is invalid" do
+      slack_token = "xoxb-xxxxxxx"
+      stub_const("ENV", {"SLACK_TOKEN" => slack_token})
+      stub_request(:post, @slack_api)
+        .to_return(body: '{"ok":false,"error":"invalid_auth"}', headers: {"Content-Type": "application/json; charset=utf-8"})
+
+      notifier = Notifier.new(AllPages.new, @pages_url, @slack_url, true)
+
+      expect {
+        notifier.run
+      }.to raise_error("Unable to post to Slack: SLACK_TOKEN is not valid")
+    end
+
+    it "prints a warning if post returns error" do
+      slack_token = "xoxb-xxxxxxx"
+      stub_const("ENV", {"SLACK_TOKEN" => slack_token})
+      stub_request(:post, @slack_api)
+        .to_return(body: '{"ok":false,"error":"channel_not_found"}', headers: {"Content-Type": "application/json; charset=utf-8"})
+
+      notifier = Notifier.new(AllPages.new, @pages_url, @slack_url, true)
+
+      expect {
+        notifier.run
+      }.to output(/Unable to post to Slack: channel_not_found/).to_stdout
     end
   end
 end
