@@ -5,15 +5,22 @@ require "vcr"
 require "webmock/rspec"
 require "timecop"
 
-VCR.configure do |config|
-  config.cassette_library_dir = "fixtures/vcr_cassettes"
-  config.hook_into :webmock
-end
-
 # Mock notification type that includes all pages
 class AllPages
   def include?(_)
     true
+  end
+
+  def line_for(page)
+    "- <#{page.url}|#{page.title}>"
+  end
+
+  def singular_message
+    "I've found a page"
+  end
+
+  def multiple_message
+    "I've found %s pages"
   end
 end
 
@@ -23,15 +30,10 @@ class NoHowToPages
   end
 end
 
-RSpec.describe Notifier, vcr: true do
+RSpec.describe Notifier, vcr: "fresh" do
   before do
     @pages_url = "https://gds-way.cloudapps.digital/api/pages.json"
-    VCR.insert_cassette("fresh")
     Timecop.freeze(Time.local(2018, 9, 12, 0, 0, 0))
-  end
-
-  after do
-    VCR.eject_cassette
   end
 
   describe "#pages" do
@@ -155,6 +157,78 @@ RSpec.describe Notifier, vcr: true do
           }
         ])
       end
+    end
+  end
+
+  describe "#run" do
+    before do
+      ENV.delete("SLACK_TOKEN")
+
+      @slack_webhook = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+      @slack_api = "https://slack.com/api/chat.postMessage"
+
+      VCR.configure do |config|
+        config.ignore_hosts "slack.com", "hooks.slack.com"
+      end
+    end
+
+    after do
+      VCR.configure do |config|
+        config.unignore_hosts "slack.com", "hooks.slack.com"
+      end
+    end
+
+    it "posts to Slack" do
+      notifier = Notifier.new(AllPages.new, @pages_url, @slack_webhook, true)
+      notifier.run
+      expect(a_request(:post, @slack_webhook)).to have_been_made.times(2)
+    end
+
+    it "does not post to Slack if not live" do
+      notifier = Notifier.new(AllPages.new, @pages_url, @slack_webhook, false)
+      notifier.run
+      expect(a_request(:post, @slack_webhook)).not_to have_been_made
+    end
+
+    it "uses the Slack API if SLACK_TOKEN is set" do
+      slack_token = "xoxb-xxxxxxx"
+      stub_const("ENV", {"SLACK_TOKEN" => slack_token})
+      api_request = stub_request(:post, @slack_api)
+        .to_return(body: '{"ok":true}', headers: {"Content-Type": "application/json; charset=utf-8"})
+
+      notifier = Notifier.new(AllPages.new, @pages_url, @slack_webhook, true)
+      notifier.run
+
+      # We want to use the chat.postMessage API instead of webhooks
+      expect(a_request(:post, @slack_webhook)).not_to have_been_made
+      expect(api_request.with(headers: {"Authorization" => "Bearer #{slack_token}"}))
+        .to have_been_made.times(2)
+    end
+
+    it "raises an error if SLACK_TOKEN is invalid" do
+      slack_token = "xoxb-xxxxxxx"
+      stub_const("ENV", {"SLACK_TOKEN" => slack_token})
+      stub_request(:post, @slack_api)
+        .to_return(body: '{"ok":false,"error":"invalid_auth"}', headers: {"Content-Type": "application/json; charset=utf-8"})
+
+      notifier = Notifier.new(AllPages.new, @pages_url, @slack_url, true)
+
+      expect {
+        notifier.run
+      }.to raise_error("Unable to post to Slack: SLACK_TOKEN is not valid")
+    end
+
+    it "prints a warning if post returns error" do
+      slack_token = "xoxb-xxxxxxx"
+      stub_const("ENV", {"SLACK_TOKEN" => slack_token})
+      stub_request(:post, @slack_api)
+        .to_return(body: '{"ok":false,"error":"channel_not_found"}', headers: {"Content-Type": "application/json; charset=utf-8"})
+
+      notifier = Notifier.new(AllPages.new, @pages_url, @slack_url, true)
+
+      expect {
+        notifier.run
+      }.to output(/Unable to post to Slack: channel_not_found/).to_stdout
     end
   end
 end
