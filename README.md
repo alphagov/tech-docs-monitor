@@ -4,7 +4,7 @@ This repo is part of the [tech-docs-template][template], and is used in
 conjunction with the [page expiry feature][expiry] that is part of the
 [tech-docs-gem][gem]
 
-Concourse CI will run the script once a day during weekdays.
+GitHub Actions will run the script once a day during weekdays.
 It will look at the pages API for your site, find all pages that have expired, and post a Slack message to the owner of each page to let them know that it needs reviewing.
 
 [template]: https://github.com/alphagov/tech-docs-template
