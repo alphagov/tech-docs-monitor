@@ -7,6 +7,9 @@ This repo is part of the [tech-docs-template][template], and is used in conjunct
 GitHub Actions will run the script once a day during weekdays.
 It will look at the pages API for your site, find all pages that have expired, and post a Slack message to the owner of each page to let them know that it needs reviewing.
 
+![image](https://user-images.githubusercontent.com/26419401/165932087-27d50763-3491-45b8-b597-1f3f53bebabb.png)
+
+
 ## How can I use this service? 
 
 Usage is simple, you will need to: 
