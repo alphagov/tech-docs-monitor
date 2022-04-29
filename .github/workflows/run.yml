@@ -17,5 +17,4 @@ jobs:
       - run: bundle exec rake notify:expired
         env:
           REALLY_POST_TO_SLACK: ${{ secrets.REALLY_POST_TO_SLACK }}
-          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
