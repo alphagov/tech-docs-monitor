@@ -9,7 +9,7 @@ namespace :notify do
   ]
 
   limits = {
-    "https://dcs-service-manual.cloudapps.digital/api/pages.json" => 5
+    "https://ministryofjustice.github.io/cloud-operations/api/pages.json" => 5
   }
 
   live = ENV.fetch("REALLY_POST_TO_SLACK", 0) == "1"
