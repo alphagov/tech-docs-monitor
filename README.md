@@ -42,7 +42,7 @@ review_in: 3 months
 
 ### Submit a PR
 
-If you are part of the `ministryofjustice` GitHub organisation you can enable the notifier by raising a PR to add your published documentation to the [`Rakefile`][Rakefile]:
+If you are part of the `ministryofjustice` GitHub organisation you can enable the notifier by raising a PR to add your published documentation to the [`Rakefile`](https://github.com/ministryofjustice/tech-docs-monitor/blob/main/Rakefile):
 
 ```
 pages_urls = [
@@ -52,7 +52,7 @@ pages_urls = [
 ]
 ```
 
-If you want to limit the number of links that are posted to Slack after a single run, add this to  `limits` in the [`Rakefile`][Rakefile]
+If you want to limit the number of links that are posted to Slack after a single run, add this to  `limits` in the [`Rakefile`](https://github.com/ministryofjustice/tech-docs-monitor/blob/main/Rakefile)
 
 ```
 limits = {
