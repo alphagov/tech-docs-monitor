@@ -6,12 +6,14 @@ task default: ["notify:expired"]
 namespace :notify do
   pages_urls = [
     "https://ministryofjustice.github.io/cloud-operations/api/pages.json",
-    "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json"
+    "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json",
+    "https://silver-dollop-30c6a355.pages.github.io/api/pages.json"
   ]
 
   limits = {
     "https://ministryofjustice.github.io/cloud-operations/api/pages.json" => 5,
-    "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json" => 5
+    "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json" => 5,
+    "https://silver-dollop-30c6a355.pages.github.io/api/pages.json" => 5
   }
 
   live = ENV.fetch("REALLY_POST_TO_SLACK", 0) == "1"
