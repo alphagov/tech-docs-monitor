@@ -8,7 +8,8 @@ namespace :notify do
     "https://ministryofjustice.github.io/cloud-operations/api/pages.json",
     "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json",
     "https://user-guidance.services.alpha.mojanalytics.xyz/api/pages.json",
-    "https://technical-guidance.service.justice.gov.uk/api/pages.json"
+    "https://technical-guidance.service.justice.gov.uk/api/pages.json",
+    "https://operations-engineering.service.justice.gov.uk/api/pages.json"
   ]
 
   limits = {
