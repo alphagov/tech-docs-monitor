@@ -98,6 +98,44 @@ RSpec.describe Notifier, vcr: "fresh" do
         ])
       end
 
+      it "applies any configured overrides when generating the message" do
+        overridden_message_prefix = "Hello :wave:, this is your friendly Docs as Code Monitor."
+        allow(ENV).to receive(:fetch).with("OVERRIDE_SLACK_MESSAGE_PREFIX", anything)
+                                  .and_return(overridden_message_prefix)
+
+        overridden_slack_channel = "#team-custom-channel"
+        allow(ENV).to receive(:fetch).with("OVERRIDE_SLACK_CHANNEL", anything)
+                                  .and_return(overridden_slack_channel)
+
+        overridden_slack_username = "edd.grant"
+        allow(ENV).to receive(:fetch).with("OVERRIDE_SLACK_USERNAME", anything)
+                                  .and_return(overridden_slack_username)
+
+        overridden_slack_icon_emoji = ":information_source:"
+        allow(ENV).to receive(:fetch).with("OVERRIDE_SLACK_ICON_EMOJI", anything)
+                                  .and_return(overridden_slack_icon_emoji)
+
+
+        payloads = @notifier.message_payloads(@notifier.pages_per_channel)
+
+        expect(payloads).to match([
+          {
+            username: overridden_slack_username,
+            icon_emoji: overridden_slack_icon_emoji,
+            text: "#{overridden_message_prefix} I've found 5 pages that are due for review:\n\n- <https://gds-way.cloudapps.digital/standards/supporting-services.html|Support Operations> (42 days ago)\n- <https://gds-way.cloudapps.digital/standards/dns-hosting.html|How to manage DNS records for your service> (11 days ago)\n- <https://gds-way.cloudapps.digital/standards/how-to-do-penetration-tests.html|How to do penetration tests> (11 days ago)\n- <https://gds-way.cloudapps.digital/standards/publish-opensource-code.html|How to publish open source code> (11 days ago)\n- <https://gds-way.cloudapps.digital/standards/sending-email.html|How to send email notifications> (11 days ago)\n",
+            mrkdwn: true,
+            channel: overridden_slack_channel,
+          },
+          {
+            username: overridden_slack_username,
+            icon_emoji: overridden_slack_icon_emoji,
+            text: "#{overridden_message_prefix} I've found a page that is due for review:\n\n- <https://gds-way.cloudapps.digital/standards/tracking-dependencies.html|How to manage third party software dependencies> (2862 days ago)\n",
+            mrkdwn: true,
+            channel: overridden_slack_channel,
+          }
+        ])
+      end
+
       it "limits the number of pages sent to slack" do
           limited_notifier = Notifier.new(Notification::Expired.new, @pages_url, "", false, 3)
           payloads = limited_notifier.message_payloads(limited_notifier.pages_per_channel)
