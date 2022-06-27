@@ -53,10 +53,14 @@ class Notifier
   end
 
   def pages
-    JSON.parse(HTTP.get(@pages_url)).map { |data|
-      data['url'] = get_absolute_url(data['url'])
-      Page.new(data)
-    }
+    begin
+      JSON.parse(HTTP.get(@pages_url)).map { |data|
+        data['url'] = get_absolute_url(data['url'])
+        Page.new(data)
+      }
+    rescue => exception
+      raise "Notifier: could not get pages for tech docs at #{@pages_url}"
+    end
   end
 
   def pages_per_channel
