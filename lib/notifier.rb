@@ -19,6 +19,8 @@ class Notifier
   def run
     payloads = message_payloads(pages_per_channel)
 
+    return if payloads.empty?
+
     puts "== JSON Payload:"
     puts JSON.pretty_generate(payloads)
 
@@ -59,7 +61,9 @@ class Notifier
         Page.new(data)
       }
     rescue => exception
-      raise "Notifier: could not get pages for tech docs at #{@pages_url}"
+      warn "Notifier: could not get pages for tech docs at #{@pages_url}"
+      warn exception.message
+      return []
     end
   end
 
