@@ -19,6 +19,8 @@ class Notifier
   def run
     payloads = message_payloads(pages_per_channel)
 
+    return if payloads.empty?
+
     puts "== JSON Payload:"
     puts JSON.pretty_generate(payloads)
 
@@ -53,10 +55,16 @@ class Notifier
   end
 
   def pages
-    JSON.parse(HTTP.get(@pages_url)).map { |data|
-      data['url'] = get_absolute_url(data['url'])
-      Page.new(data)
-    }
+    begin
+      JSON.parse(HTTP.get(@pages_url)).map { |data|
+        data['url'] = get_absolute_url(data['url'])
+        Page.new(data)
+      }
+    rescue => exception
+      warn "Notifier: could not get pages for tech docs at #{@pages_url}"
+      warn exception.message
+      return []
+    end
   end
 
   def pages_per_channel
