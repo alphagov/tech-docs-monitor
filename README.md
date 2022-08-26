@@ -15,7 +15,7 @@ It will look at the pages API for your site, find all pages that have expired, a
 
 ### `alphagov` users
 
-If you are part of the `alphagov` GitHub organisation you can enable the notifier by raising a PR to add your published documentation to the [`Rakefile`][Rakefile]:
+If you are part of the `alphagov` GitHub organisation you can enable the notifier by raising a PR to add your published documentation to the [`Rakefile`](Rakefile):
 
 ```
 pages_urls = [
@@ -25,7 +25,7 @@ pages_urls = [
 ]
 ```
 
-If you want to limit the number of links that are posted to Slack after a single run, add this to  `limits` in the [`Rakefile`][Rakefile]
+If you want to limit the number of links that are posted to Slack after a single run, add this to  `limits` in the [`Rakefile`](Rakefile)
 
 ```
 limits = {
@@ -34,8 +34,6 @@ limits = {
 ```
 
 The default behaviour is no limit, and the Slack message will contain all pages discovered.
-
-[Rakefile]: https://github.com/alphagov/tech-docs-monitor/blob/master/Rakefile
 
 ### General configuration
 
