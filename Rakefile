@@ -8,14 +8,11 @@ namespace :notify do
     "https://www.docs.verify.service.gov.uk/api/pages.json",
     "https://gds-way.cloudapps.digital/api/pages.json",
     "https://verify-team-manual.cloudapps.digital/api/pages.json",
-    "https://dcs-pilot-docs.cloudapps.digital/api/pages.json",
-    "https://dcs-service-manual.cloudapps.digital/api/pages.json",
     "https://docs.payments.service.gov.uk/api/pages.json",
     "https://govwifi-dev-docs.cloudapps.digital/api/pages.json",
   ]
 
   limits = {
-    "https://dcs-service-manual.cloudapps.digital/api/pages.json" => 5
   }
 
   live = ENV.fetch("REALLY_POST_TO_SLACK", 0) == "1"
