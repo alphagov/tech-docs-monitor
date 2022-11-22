@@ -5,7 +5,7 @@ task default: ["notify:expired"]
 
 namespace :notify do
   pages_urls = [
-    "https://ministryofjustice.github.io/cloud-operations/api/pages.json",
+    "https://ministryofjustice.github.io/nvvs-devops/api/pages.json",
     "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json",
     "https://user-guidance.services.alpha.mojanalytics.xyz/api/pages.json",
     "https://technical-guidance.service.justice.gov.uk/api/pages.json",
@@ -13,7 +13,7 @@ namespace :notify do
   ]
 
   limits = {
-    "https://ministryofjustice.github.io/cloud-operations/api/pages.json" => 5,
+    "https://ministryofjustice.github.io/nvvs-devops/api/pages.json" => 5,
     "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json" => 5,
     "https://user-guidance.services.alpha.mojanalytics.xyz/api/pages.json" => 5
   }
