@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby File.read('.ruby-version').strip
+ruby '~> 2.7.0'
 
 gem 'activesupport'
 gem 'chronic'
