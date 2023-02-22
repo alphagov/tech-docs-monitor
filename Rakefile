@@ -8,12 +8,14 @@ namespace :notify do
     "https://ministryofjustice.github.io/nvvs-devops/api/pages.json",
     "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json",
     "https://technical-guidance.service.justice.gov.uk/api/pages.json",
-    "https://operations-engineering.service.justice.gov.uk/api/pages.json"
+    "https://operations-engineering.service.justice.gov.uk/api/pages.json",
+    "https://technical-documentation.data-platform.service.justice.gov.uk/api/pages.json"
   ]
 
   limits = {
     "https://ministryofjustice.github.io/nvvs-devops/api/pages.json" => 5,
     "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json" => 5,
+    "https://technical-documentation.data-platform.service.justice.gov.uk/api/pages.json" => 5
   }
 
   live = ENV.fetch("REALLY_POST_TO_SLACK", 0) == "1"
