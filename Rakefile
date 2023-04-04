@@ -9,7 +9,8 @@ namespace :notify do
     "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json",
     "https://technical-guidance.service.justice.gov.uk/api/pages.json",
     "https://operations-engineering.service.justice.gov.uk/api/pages.json",
-    "https://technical-documentation.data-platform.service.justice.gov.uk/api/pages.json"
+    "https://technical-documentation.data-platform.service.justice.gov.uk/api/pages.json",
+    "https://ministryofjustice.github.io/hmpps-integration-api-docs/api/pages.json"
   ]
 
   limits = {
