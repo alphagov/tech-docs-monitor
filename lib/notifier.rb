@@ -19,6 +19,8 @@ class Notifier
   def run
     payloads = message_payloads(pages_per_channel)
 
+    return if payloads.empty?
+
     puts "== JSON Payload:"
     puts JSON.pretty_generate(payloads)
 
@@ -53,10 +55,16 @@ class Notifier
   end
 
   def pages
-    JSON.parse(HTTP.get(@pages_url)).map { |data|
-      data['url'] = get_absolute_url(data['url'])
-      Page.new(data)
-    }
+    begin
+      JSON.parse(HTTP.get(@pages_url)).map { |data|
+        data['url'] = get_absolute_url(data['url'])
+        Page.new(data)
+      }
+    rescue => exception
+      warn "Notifier: could not get pages for tech docs at #{@pages_url}"
+      warn exception.message
+      return []
+    end
   end
 
   def pages_per_channel
@@ -80,20 +88,23 @@ class Notifier
         @notification.line_for(page)
       end
 
+      message_prefix = ENV.fetch('OVERRIDE_SLACK_MESSAGE_PREFIX', "Hello :paw_prints:, this is your friendly manual spaniel.")
       message = <<~doc
-        Hello :paw_prints:, this is your friendly manual spaniel. #{number_of}:
+        #{message_prefix} #{number_of}:
 
         #{page_lines.join("\n")}
       doc
 
       channel = ENV.fetch('OVERRIDE_SLACK_CHANNEL', channel)
+      username = ENV.fetch('OVERRIDE_SLACK_USERNAME', "Daniel the Manual Spaniel")
+      icon_emoji = ENV.fetch('OVERRIDE_SLACK_ICON_EMOJI', ":daniel-the-manual-spaniel:")
 
       puts "== Message to #{channel}"
       puts message
 
       {
-        username: "Daniel the Manual Spaniel",
-        icon_emoji: ":daniel-the-manual-spaniel:",
+        username: username,
+        icon_emoji: icon_emoji,
         text: message,
         mrkdwn: true,
         channel: channel,

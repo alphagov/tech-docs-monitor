@@ -67,6 +67,25 @@ The default behaviour is no limit, and the Slack message will contain all pages 
 [Rakefile]: https://github.com/alphagov/tech-docs-monitor/blob/master/Rakefile
 
 
-## License
+* `SLACK_WEBHOOK_URL`: The Slack webhook URL to allow messages to be posted.
+* `REALLY_POST_TO_SLACK`: Messages will only be posted to Slack if the value of
+  this var is `1`.
 
-The gem is available as open source under the terms of the [MIT License](LICENSE).
+#### Slack message customisation
+
+This is the default Slack message when pages expire:
+
+![default-message-example](docs/images/default-message-example.png)
+
+You can customise parts of the Slack message by configuring environment variables. The environment variables you can customise are:
+
+| Environment variable name     | Purpose                                                         | Default value                                                                          |
+|-------------------------------|-----------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| OVERRIDE_SLACK_MESSAGE_PREFIX | Sets a custom message prefix.                                   | "Hello :paw_prints:, this is your friendly manual spaniel."                            |
+| OVERRIDE_SLACK_CHANNEL        | Sets a single Slack channel to which all messages will be sent. | The owning Slack channel for each page reported in the site's /api/pages.json endpoint |
+| OVERRIDE_SLACK_USERNAME       | Sets the username to which Slack messages are attributed.       | "Daniel the Manual Spaniel"                                                            |
+| OVERRIDE_SLACK_ICON_EMOJI     | Sets the icon emoji attributed to Slack messages.               | ":daniel-the-manual-spaniel:"                                                          |
+
+## Licence
+
+The gem is available as open source under the terms of the [MIT License](LICENCE).
