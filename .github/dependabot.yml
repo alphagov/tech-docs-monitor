@@ -10,3 +10,7 @@ updates:
         dependency-type: direct
       - dependency-name: rspec
         dependency-type: direct
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
