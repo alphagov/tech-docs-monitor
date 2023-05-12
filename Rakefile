@@ -32,6 +32,8 @@ namespace :notify do
     notification = Notification::Expired.new
 
     pages_urls.each do |page_url|
+      puts "== #{page_url}"
+
       Notifier.new(notification, page_url, slack_url, live, limits.fetch(page_url, -1)).run
     end
   end
@@ -43,6 +45,8 @@ namespace :notify do
     notification = Notification::WillExpireBy.new(expire_by)
 
     pages_urls.each do |page_url|
+      puts "== #{page_url}"
+
       Notifier.new(notification, page_url, slack_url, live).run
     end
   end
