@@ -86,10 +86,6 @@ You can customise parts of the Slack message by configuring environment variable
 | OVERRIDE_SLACK_USERNAME       | Sets the username to which Slack messages are attributed.       | "Daniel the Manual Spaniel"                                                            |
 | OVERRIDE_SLACK_ICON_EMOJI     | Sets the icon emoji attributed to Slack messages.               | ":daniel-the-manual-spaniel:"                                                          |
 
-This is an example of a customised Slack message:
-
-![customised-message-example](docs/images/customised-message-example.png)
-
 ## Licence
 
 The gem is available as open source under the terms of the [MIT License](LICENCE).
