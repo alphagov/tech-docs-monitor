@@ -7,13 +7,13 @@ namespace :notify do
   pages_urls = [
     "https://ministryofjustice.github.io/hmpps-integration-api-docs/api/pages.json",
     "https://ministryofjustice.github.io/nvvs-devops/api/pages.json",
-    "https://operations-engineering.service.justice.gov.uk/api/pages.json",
     "https://runbooks.cloud-platform.service.justice.gov.uk/api/pages.json",
     "https://technical-documentation.data-platform.service.justice.gov.uk/api/pages.json",
     "https://technical-guidance.service.justice.gov.uk/api/pages.json",
     "https://user-guide.cloud-platform.service.justice.gov.uk/api/pages.json",
     "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json",
-    "https://runbooks.operations-engineering.service.justice.gov.uk/api/pages.json"
+    "https://runbooks.operations-engineering.service.justice.gov.uk/api/pages.json",
+    "https://user-guides.operations-engineering.service.justice.gov.uk/api/pages.json"
   ]
 
   limits = {
