@@ -13,7 +13,7 @@ namespace :notify do
     "https://user-guide.cloud-platform.service.justice.gov.uk/api/pages.json",
     "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json",
     "https://runbooks.operations-engineering.service.justice.gov.uk/api/pages.json",
-    "https://user-guides.operations-engineering.service.justice.gov.uk/api/pages.json"
+    "https://user-guide.operations-engineering.service.justice.gov.uk/api/pages.json"
   ]
 
   limits = {
