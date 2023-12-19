@@ -12,6 +12,7 @@ namespace :notify do
     "https://verify-team-manual.cloudapps.digital/api/pages.json",
     "https://docs.payments.service.gov.uk/api/pages.json",
     "https://govwifi-dev-docs.cloudapps.digital/api/pages.json",
+    "https://di-team-manual.london.cloudapps.digital/api/pages.json",
   ]
 
   limits = {
