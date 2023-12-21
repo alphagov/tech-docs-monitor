@@ -13,5 +13,5 @@ Resources:
           REALLY_POST_TO_SLACK: 0
       # PackageType: Zip
       Role: TechDocsNotifierRole
-      Runtime: ruby2.7
+      Runtime: ruby3.2
 
