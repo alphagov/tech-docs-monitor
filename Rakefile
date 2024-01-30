@@ -5,9 +5,7 @@ task default: ["notify:expired"]
 
 namespace :notify do
   pages_urls = [
-    "https://www.docs.verify.service.gov.uk/api/pages.json",
     "https://gds-way.cloudapps.digital/api/pages.json",
-    "https://verify-team-manual.cloudapps.digital/api/pages.json",
     "https://docs.payments.service.gov.uk/api/pages.json",
     "https://govwifi-dev-docs.cloudapps.digital/api/pages.json",
     "https://team-manual.account.gov.uk/api/pages.json",
