@@ -8,8 +8,8 @@ namespace :notify do
     "https://gds-way.digital.cabinet-office.gov.uk/api/pages.json",
     "https://docs.payments.service.gov.uk/api/pages.json",
     "https://team-manual.account.gov.uk/api/pages.json",
-    "https://dev-docs.wifi.service.gov.uk/",
-    "https://docs.wifi.service.gov.uk/",
+    "https://dev-docs.wifi.service.gov.uk/api/pages.json",
+    "https://docs.wifi.service.gov.uk/api/pages.json",
   ]
 
   limits = {
