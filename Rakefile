@@ -7,12 +7,11 @@ task default: ["notify:expired"]
 
 namespace :notify do
   pages_urls = [
-    "https://www.docs.verify.service.gov.uk/api/pages.json",
-    "https://gds-way.cloudapps.digital/api/pages.json",
-    "https://verify-team-manual.cloudapps.digital/api/pages.json",
+    "https://gds-way.digital.cabinet-office.gov.uk/api/pages.json",
     "https://docs.payments.service.gov.uk/api/pages.json",
-    "https://govwifi-dev-docs.cloudapps.digital/api/pages.json",
-    "https://di-team-manual.london.cloudapps.digital/api/pages.json",
+    "https://team-manual.account.gov.uk/api/pages.json",
+    "https://dev-docs.wifi.service.gov.uk/api/pages.json",
+    "https://docs.wifi.service.gov.uk/api/pages.json",
   ]
 
   limits = {
