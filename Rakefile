@@ -9,7 +9,6 @@ namespace :notify do
     "https://ministryofjustice.github.io/nvvs-devops/api/pages.json",
     "https://runbooks.cloud-platform.service.justice.gov.uk/api/pages.json",
     "https://docs.analytical-platform.service.justice.gov.uk/api/pages.json",
-    "https://technical-guidance.service.justice.gov.uk/api/pages.json",
     "https://user-guide.cloud-platform.service.justice.gov.uk/api/pages.json",
     "https://user-guide.modernisation-platform.service.justice.gov.uk/api/pages.json",
     "https://runbooks.operations-engineering.service.justice.gov.uk/api/pages.json",
