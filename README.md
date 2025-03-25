@@ -13,15 +13,14 @@ It will look at the pages API for your site, find all pages that have expired, a
 
 ## Usage
 
-### `alphagov` users
+### `GovWifi` users
 
-If you are part of the `alphagov` GitHub organisation you can enable the notifier by raising a PR to add your published documentation to the [`Rakefile`](Rakefile):
+If you are part of the `govwifi` GitHub organisation you can enable the notifier by raising a PR to add your published documentation to the [`Rakefile`](Rakefile):
 
 ```
 pages_urls = [
-  "https://gds-way.cloudapps.digital/api/pages.json",
-  "https://docs.publishing.service.gov.uk/api/pages.json",
-  "your-docs-site.cloudapps.digital"
+    "https://dev-docs.wifi.service.gov.uk/api/pages.json",
+    "https://docs.wifi.service.gov.uk/api/pages.json",
 ]
 ```
 
