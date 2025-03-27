@@ -23,7 +23,6 @@ namespace :notify do
   desc "Notifies of all pages which have expired"
   task :expired do
     notification = Notification::Expired.new
-
     pages_urls.each do |page_url|
       puts "== #{page_url}"
 

@@ -18,3 +18,4 @@ jobs:
         env:
           REALLY_POST_TO_SLACK: ${{ (github.event_name == 'schedule') && 1 || 0 }}
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
