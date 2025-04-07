@@ -17,10 +17,5 @@
   },
   "addons": [
     "scheduler:standard"
-  ],
-  "buildpacks": [
-    {
-      "url": "https://github.com/heroku/heroku-buildpack-ruby.git"
-    }
   ]
 }
