@@ -5,6 +5,9 @@ task default: ["notify:expired"]
 
 namespace :notify do
   pages_urls = [
+    "https://gds-way.digital.cabinet-office.gov.uk/api/pages.json",
+    "https://docs.payments.service.gov.uk/api/pages.json",
+    "https://team-manual.account.gov.uk/api/pages.json",
     "https://dev-docs.wifi.service.gov.uk/api/pages.json",
     "https://docs.wifi.service.gov.uk/api/pages.json",
   ]
@@ -23,6 +26,7 @@ namespace :notify do
   desc "Notifies of all pages which have expired"
   task :expired do
     notification = Notification::Expired.new
+
     pages_urls.each do |page_url|
       puts "== #{page_url}"
 

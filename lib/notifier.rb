@@ -95,8 +95,7 @@ class Notifier
         #{page_lines.join("\n")}
       doc
 
-      # channel = ENV.fetch('OVERRIDE_SLACK_CHANNEL', channel)
-      channel = "#govwifi"
+      channel = ENV.fetch('OVERRIDE_SLACK_CHANNEL', channel)
       username = ENV.fetch('OVERRIDE_SLACK_USERNAME', "Daniel the Manual Spaniel")
       icon_emoji = ENV.fetch('OVERRIDE_SLACK_ICON_EMOJI', ":daniel-the-manual-spaniel:")
 
