@@ -5,13 +5,12 @@ on:
     - cron: "0 0 * * *"
 
 # Prevent scheduled jobs being disabled after 60 days
-# see https://github.community/t/no-notification-workflow-disabled-after-60-days/182169
-# existing GitHub notifications don't seem to work at all
-# this should trigger a dummy commit to the default branch every 50 days
 jobs:
   keepalive:
     name: Keep scheduled jobs running
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     steps:
-      - uses: actions/checkout@v2
-      - uses: gautamkrishnar/keepalive-workflow@1.0.7
+      - name: 'Keep workflows alive'
+        uses: liskin/gh-workflow-keepalive@v1
