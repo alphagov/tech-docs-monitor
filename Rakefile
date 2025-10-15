@@ -15,7 +15,7 @@ namespace :notify do
     'https://user-guide.find-moj-data.service.justice.gov.uk/api/pages.json',
     'https://runbooks.find-moj-data.service.justice.gov.uk/api/pages.json',
     'https://ministryofjustice.github.io/hmpps-probation-integration-services/tech-docs/api/pages.json',
-    'https://ministryofjustice.github.io/cloud-optimisation-and-accountability/api/pages.json'
+    'https://cloud-optimisation-and-accountability.justice.gov.uk//api/pages.json'
   ]
 
   limits = {
