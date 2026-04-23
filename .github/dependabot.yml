@@ -1,12 +1,26 @@
 version: 2
 updates:
-  - package-ecosystem: bundler
-    directory: /
+  # 1. Update Ruby dependencies (Gemfile/gemspec) in the root
+  - package-ecosystem: "bundler"
+    directory: "/" 
     schedule:
-      interval: daily
-    allow:
-      # Framework gems
-      - dependency-name: rake
-        dependency-type: direct
-      - dependency-name: rspec
-        dependency-type: direct
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    commit-message:
+      prefix: chore
+    open-pull-requests-limit: 5
+
+  # 2. Update GitHub Actions (keeps your CI workflows secure)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    commit-message:
+      prefix: chore
+    groups:
+      github-actions-updates:
+        patterns:
+          - "*"
