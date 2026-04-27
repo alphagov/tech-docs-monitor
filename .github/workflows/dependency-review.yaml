@@ -15,5 +15,3 @@ jobs:
         with:
           fail-on-severity: high
           show-patched-versions: true
-          
-           de0fac2
