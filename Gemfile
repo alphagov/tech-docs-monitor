@@ -5,7 +5,6 @@ ruby File.read('.ruby-version').strip
 gem 'activesupport'
 gem 'chronic'
 gem 'http'
-gem 'octokit'
 gem 'rake'
 
 group :test do
