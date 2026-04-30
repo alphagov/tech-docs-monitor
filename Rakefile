@@ -12,6 +12,7 @@ namespace :notify do
     "https://docs.wifi.service.gov.uk/api/pages.json",
     "https://engineering-enablement.gds-reliability.engineering/api/pages.json",
     "https://docs.data-community.publishing.service.gov.uk/api/pages.json",
+    "https://docs.wallet.service.gov.uk/api/pages.json"
   ]
 
   limits = {
