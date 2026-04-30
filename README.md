@@ -1,31 +1,67 @@
-# Tech Docs Template - page expiry notifier
+# Tech docs monitor
 
-This repo is part of the [tech-docs-template][template], and is used in
-conjunction with the [page expiry feature][expiry] that is part of the
-[tech-docs-gem][gem]
+You can use the tech docs monitor to receive notifications when pages in your technical documentation are due for review.  To use the monitor you must:
 
-GitHub Actions will run the script once a day during weekdays.
-It will look at the pages API for your site, find all pages that have expired, and post a Slack message to the owner of each page to let them know that it needs reviewing.
+- be part of the `alphagov` GitHub organisation
+- have built your site using the [tech-docs-template][template]
+- be using the [page expiry feature][expiry] in your pages
+- have a Slack channel to receive notifications
 
-[template]: https://github.com/alphagov/tech-docs-template
-[expiry]: https://alphagov.github.io/tech-docs-manual/#last-reviewed-on-and-review-in
-[gem]: https://github.com/alphagov/tech-docs-gem
+The monitor is scheduled to run once a week on Wednesdays at 12:05.  This is managed via the GitHub actions found in `./github/workflows/run.yml`.
 
-## Usage
+## Understand how to receive notifications
 
-### `alphagov` users
+In order to receive notifications for expired pages you need to:
 
-If you are part of the `alphagov` GitHub organisation you can enable the notifier by raising a PR to add your published documentation to the [`Rakefile`](Rakefile):
+- add the correct [settings to your documentation](#set-up-the-monitor-in-your-documentation)
+- add the link your `pages.json` [to this repository](#set-up-the-monitor-in-this-repository)
 
+### Set up the monitor in your documentation
+
+To allow the monitor to check your documentation, the `frontmatter` in your pages should include:
+
+- a `review_by` date
+- a `owner_slack` channel
+
+You can check these settings by visiting `https://<YOUR_PIBLISHED_SITE>/api/pages.json`.  You should see something similar to the output below:
+
+```json
+[
+  {
+    "title": "Search",
+    "url": "/search/",
+    "review_by":"2020-01-01",
+    "owner_slack": "#my-slack-channel"
+  },
+  ...
 ```
-pages_urls = [
-  "https://gds-way.cloudapps.digital/api/pages.json",
-  "https://docs.publishing.service.gov.uk/api/pages.json",
-  "your-docs-site.cloudapps.digital"
-]
+
+If you have not set these values you can use the global settings in `config/tech-docs.yml`.  For example:
+
+```yaml
+
+default_owner_slack: '#my-team-slack-channel'
+owner_slack_workspace: 'gds'
 ```
 
-If you want to limit the number of links that are posted to Slack after a single run, add this to  `limits` in the [`Rakefile`](Rakefile)
+### Add your documentation to the tech docs monitor
+
+To add your documentation to the weekly job, you must add a link to your `pages.json` to the [`Rakefile`](Rakefile) in this repository.  
+
+To add your link you open a pull request adding your link to the `pages_urls` list.  For example:
+
+```diff
+namespace :notify do
+  pages_urls = [
+    "https://gds-way.cloudapps.digital/api/pages.json",
+    "https://docs.publishing.service.gov.uk/api/pages.json",
++   "https://<YOUR_PIBLISHED_SITE>/api/pages.json"
+```
+
+### Additional configurations
+
+#### Notification limits
+If you want to limit the number of links that are posted to Slack after a single run, add this to `limits` in the [`Rakefile`](Rakefile)
 
 ```
 limits = {
@@ -35,15 +71,7 @@ limits = {
 
 The default behaviour is no limit, and the Slack message will contain all pages discovered.
 
-### General configuration
-
-The following environment variables are necessary:
-
-* `SLACK_WEBHOOK_URL`: The Slack webhook URL to allow messages to be posted.
-* `REALLY_POST_TO_SLACK`: Messages will only be posted to Slack if the value of
-  this var is `1`.
-
-#### Slack message customisation
+#### Customise Slack messages
 
 This is the default Slack message when pages expire:
 
@@ -62,6 +90,19 @@ This is an example of a customised Slack message:
 
 ![customised-message-example](docs/images/customised-message-example.png)
 
+
+### GitHub actions environment variables
+
+In order to run the scheduled job, the GitHub action in this repo must have the following environment variables:
+
+- `SLACK_WEBHOOK_URL` - the Slack webhook URL to allow messages to be posted.
+- `REALLY_POST_TO_SLACK` - messages will only be posted to Slack if the value of
+  this var is `1`.
+
 ## Licence
 
 The gem is available as open source under the terms of the [MIT License](LICENCE).
+
+[template]: https://github.com/alphagov/tech-docs-template
+[expiry]: https://alphagov.github.io/tech-docs-manual/#last-reviewed-on-and-review-in
+[gem]: https://github.com/alphagov/tech-docs-gem
