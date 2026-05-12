@@ -17,5 +17,9 @@ jobs:
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 #4.9.0
         with:
+          # If it's a PR, use the target branch. If it's a push, use 'main'.
+          base-ref: ${{ github.event.pull_request.base.ref || 'main' }}
+          # If it's a PR, use the source branch. If it's a push, use the current commit.
+          head-ref: ${{ github.event.pull_request.head.ref || github.sha }}
           fail-on-severity: high
           show-patched-versions: true
