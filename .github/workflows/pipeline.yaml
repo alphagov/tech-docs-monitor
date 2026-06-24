@@ -6,8 +6,8 @@ on:
 
 jobs:
   dependency-review:
-    uses: ./.github/workflows/steps/dependency-review.yaml
+    uses: ./.github/workflows/dependency-review.yaml
 
   test:
     needs: dependency-review
-    uses: ./.github/workflows/steps/test.yaml
+    uses: ./.github/workflows/test.yaml
