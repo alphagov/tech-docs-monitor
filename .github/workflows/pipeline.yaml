@@ -1,0 +1,13 @@
+on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+
+jobs:
+  dependency-review:
+    uses: ./.github/workflows/steps/dependency-review.yaml
+
+  test:
+    needs: dependency-review
+    uses: ./.github/workflows/steps/test.yaml

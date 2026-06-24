@@ -1,4 +1,7 @@
-on: [push, pull_request]
+name: Test
+on:
+  workflow_call:
+
 jobs:
   test:
     runs-on: ubuntu-latest
