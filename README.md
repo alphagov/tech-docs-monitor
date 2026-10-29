@@ -104,5 +104,5 @@ In order to run the scheduled job, the GitHub action in this repo must have the 
 The gem is available as open source under the terms of the [MIT License](LICENCE).
 
 [template]: https://github.com/alphagov/tech-docs-template
-[expiry]: https://alphagov.github.io/tech-docs-manual/#last-reviewed-on-and-review-in
+[expiry]: https://alphagov.github.io/tech-docs-gem/configure_project/page_expiry_and_review/index.html#frontmatter-configuration
 [gem]: https://github.com/alphagov/tech-docs-gem
