@@ -11,7 +11,8 @@ namespace :notify do
     "https://dev-docs.wifi.service.gov.uk/api/pages.json",
     "https://docs.wifi.service.gov.uk/api/pages.json",
     "https://engineering-enablement.gds-reliability.engineering/api/pages.json",
-    "https://docs.wallet.service.gov.uk/api/pages.json"
+    "https://docs.wallet.service.gov.uk/api/pages.json",
+    "https://alphagov.github.io/tech-docs-gem/api/pages.json"
   ]
 
   limits = {
